@@ -6,8 +6,6 @@ session_start();
 
 $cartItems = [];
 
-
-
 if (isset($_SESSION['cart'])) {
     #$_SESSION['cart'] = [];
     $cartItems = $_SESSION['cart'];
@@ -15,6 +13,7 @@ if (isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 $products = [];
+
 if (!empty($cartItems)) {
     $placeholders = implode(',', array_fill(0, count($cartItems), '?'));
     $typeString = str_repeat('i', count($cartItems));
@@ -24,21 +23,25 @@ if (!empty($cartItems)) {
     $stmt->execute();
 
     $result = $stmt->get_result();
+
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $products[] = $row;
         }
     }
+
     $stmt->close();
 } else {
     $stmt = $conn->prepare("SELECT * FROM products");
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $products[] = $row;
         }
     }
+
     $stmt->close();
 }
 
@@ -57,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include("../utils/styles.php") ?>
+    <?php include('../utils/styles.php') ?>
     <title>Products</title>
 </head>
 
@@ -72,17 +75,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <!-- Image will go here -->
                     </div>
                     <p class="product-title">
-                        <?= sanitize($row["title"]) ?>
+                        <?= sanitize($row['title']) ?>
                     </p>
                     <p class="product-description">
-                        <?= sanitize($row["description"]) ?>
+                        <?= sanitize($row['description']) ?>
                     </p>
                     <p class="product-price">
-                        <?= sanitize($row["price"]) . "$" ?>
+                        <?= sanitize($row['price']) . '$' ?>
                     </p>
                 </div>
 
-                <a class="add-to-cart" href="index.php?index=<?= sanitize($row["id"]) ?>">
+                <a class="add-to-cart" href="index.php?index=<?= sanitize($row['id']) ?>">
                     Add to cart
                 </a>
             </div>

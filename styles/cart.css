@@ -15,3 +15,26 @@
     box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
     text-decoration: none;
 }
+
+.checkout-container{
+    width:100%;
+    display:flex;
+    justify-content: center;
+}
+.checkout-container button{
+    cursor: pointer;
+    width:150px;
+    height:50px;
+    font-size: 1.5rem;
+    background-color: rgb(131, 131, 255);
+    color:white;
+    border:none;
+    border-radius: 10px;
+}
+.checkout-container button:hover{
+    
+    background-color: rgb(83, 83, 194);
+    color:white;
+
+}
+

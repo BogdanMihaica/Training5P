@@ -1,38 +1,42 @@
 <?php
-    require_once('../config/database.php');
-    require_once('../common/functions.php');
-    session_start();
+require_once('../config/database.php');
+require_once('../common/functions.php');
+require_once('../config/manager.php');
 
-    $cartItems = [];
-    if (isset($_SESSION['cart'])) {
-        $cartItems = $_SESSION['cart'];
+session_start();
+
+$cartItems = [];
+
+if (isset($_SESSION['cart'])) {
+    $cartItems = $_SESSION['cart'];
+}
+
+$result = [];
+
+if (count($cartItems) > 0) {
+
+    $placeholders = implode(',', array_fill(0, count($cartItems), '?'));
+    $typeString = str_repeat('i', count($cartItems));
+
+    $stmt = $conn->prepare("SELECT * FROM products WHERE id IN ($placeholders)");
+    $stmt->bind_param($typeString, ...$cartItems);
+
+    $stmt->execute();
+    $resultSet = $stmt->get_result();
+
+    while ($row = $resultSet->fetch_assoc()) {
+        $result[] = $row;
     }
+}
 
-    $result = [];
-
-    if (count($cartItems) > 0) {
-
-        $placeholders = implode(',', array_fill(0, count($cartItems), '?'));
-        $typeString = str_repeat('i', count($cartItems));
-
-        $stmt = $conn->prepare("SELECT * FROM products WHERE id IN ($placeholders)");
-        $stmt->bind_param($typeString, ...$cartItems);
-
-        $stmt->execute();
-        $resultSet = $stmt->get_result();
-        while ($row = $resultSet->fetch_assoc()) {
-            $result[] = $row;
-        }
+#Verify GET for removing
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['index'])) {
+        $index = $_GET['index'];
+        removeFromCart($index);
+        header('Location: cart.php');
     }
-
-    #Verify GET for removing
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        if (isset($_GET['index'])) {
-            $index = $_GET['index'];
-            removeFromCart($index);
-            header('Location: cart.php');
-        }
-    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +44,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include("../utils/styles.php") ?>
+    <?php include('../utils/styles.php') ?>
     <title>Products</title>
 </head>
 
@@ -55,22 +59,25 @@
                         <!-- Image will go here -->
                     </div>
                     <p class="product-title">
-                        <?= sanitize($row["title"]) ?>
+                        <?= sanitize($row['title']) ?>
                     </p>
                     <p class="product-description">
-                        <?= sanitize($row["description"]) ?>
+                        <?= sanitize($row['description']) ?>
                     </p>
                     <p class="product-price">
-                        <?= sanitize($row["price"]) . "$" ?>
+                        <?= sanitize($row['price']) . '$' ?>
                     </p>
                 </div>
 
-                <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row["id"]) ?>">
-                    Remove from cart
+                <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row['id']) ?>">
+                    Remove item
                 </a>
             </div>
         <?php endforeach ?>
     </div>
+    <form action="../common/checkout.php" method="post" class="checkout-container">
+        <button type="submit">Checkout</button>
+    </form>
 </body>
 
 </html>
