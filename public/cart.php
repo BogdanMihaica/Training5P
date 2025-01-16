@@ -1,70 +1,76 @@
 <?php
-    require_once("../config/database.php");
-
+    require_once('../config/database.php');
+    require_once('../common/functions.php');
     session_start();
-    
-    $cartItems = array();
-    if (isset($_SESSION["cart"])){
-        $cartItems = $_SESSION["cart"];
+
+    $cartItems = [];
+    if (isset($_SESSION['cart'])) {
+        $cartItems = $_SESSION['cart'];
     }
 
-    $result = array();
+    $result = [];
 
     if (count($cartItems) > 0) {
-        foreach ($cartItems as $key) {
-            $stmt = "SELECT * from products where id = " . $key;
-            $product = $conn->query($stmt);
-            if( $row = $product->fetch_assoc() ) {
-                $result[] = $row;
-            }
+
+        $placeholders = implode(',', array_fill(0, count($cartItems), '?'));
+        $typeString = str_repeat('i', count($cartItems));
+
+        $stmt = $conn->prepare("SELECT * FROM products WHERE id IN ($placeholders)");
+        $stmt->bind_param($typeString, ...$cartItems);
+
+        $stmt->execute();
+        $resultSet = $stmt->get_result();
+        while ($row = $resultSet->fetch_assoc()) {
+            $result[] = $row;
         }
     }
 
     #Verify GET for removing
-    if ($_SERVER["REQUEST_METHOD"] === "GET"){
-        if (isset($_GET["index"])){
-            $index = $_GET["index"];
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if (isset($_GET['index'])) {
+            $index = $_GET['index'];
             removeFromCart($index);
-            header('Location: .');
+            header('Location: cart.php');
         }
     }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/product_page.css">
-    <link rel="stylesheet" href="../styles/cart.css">
-    <link rel="stylesheet" href="../styles/universal.css">
+    <?php include("../utils/styles.php") ?>
     <title>Products</title>
 </head>
+
 <body>
     <a href="index.php" class="view-cart">View product list</a>
     <h1>Your cart items</h1>
     <div class="products-container">
-        <?php foreach( $result as $row ) : ?>
+        <?php foreach ($result as $row) : ?>
             <div class="product">
                 <div class="product-details">
                     <div class="product-image">
                         <!-- Image will go here -->
                     </div>
                     <p class="product-title">
-                        <?= $row["title"] ?>
+                        <?= sanitize($row["title"]) ?>
                     </p>
                     <p class="product-description">
-                        <?= $row["description"] ?>
+                        <?= sanitize($row["description"]) ?>
                     </p>
                     <p class="product-price">
-                        <?= $row["price"] . "$" ?>
+                        <?= sanitize($row["price"]) . "$" ?>
                     </p>
                 </div>
-                
-                <a class="remove-from-cart" href="<?= "cart.php?index=".$row["id"] ?>">
+
+                <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row["id"]) ?>">
                     Remove from cart
                 </a>
             </div>
         <?php endforeach ?>
     </div>
 </body>
+
 </html>
