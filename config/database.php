@@ -1,7 +1,7 @@
 <?php
 
-    $username = "root";
-    $password = "";
+    $username = 'root';
+    $password = '';
     $dbname = "training";
     $host = "localhost";
     
@@ -11,6 +11,4 @@
         die("Error connecting to the database.");
     }
     
-    return $conn;
-
 ?>

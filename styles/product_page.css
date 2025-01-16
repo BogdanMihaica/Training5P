@@ -11,7 +11,6 @@ h1{
     justify-content: flex-start;
     align-items: flex-start;
     gap:1rem;
-    
 }
 
 .product{
@@ -47,5 +46,23 @@ h1{
     -webkit-box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
     box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
+    text-decoration: none;
+}
+
+.view-cart{
+    position: fixed;
+    top:1rem;
+    left:1rem;
+    cursor: pointer;
+    width:150px;
+    height:50px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(10,0,187);
+    background: linear-gradient(90deg, rgb(12, 168, 54) 0%, rgb(66, 225, 66) 100%);
+    color:white;
+    font-size:1.2rem;
+    border-radius: 10px;
     text-decoration: none;
 }
