@@ -1,26 +1,41 @@
 <?php
-    session_start();
-
     require_once("config/database.php");
-    require_once("utils/functions.php");
+    require_once("common/functions.php");
+
+    session_start();
+    
     $cartItems=array();
-
+    
     if (isset($_SESSION["cart"])) {
-        $cartItems = $_SESSION["cart"] ;
-    }
-
+        $cartItems = $_SESSION["cart"];
+    } else 
+        $_SESSION["cart"]=array();
+    
+    # Fetching all products and filtering
     $stmt = "SELECT * from products";
     $result = $conn->query($stmt);
-    $products=array();
+    $products = array();
 
     if ($result->num_rows > 0) {
         while ( $row = $result->fetch_assoc() ) {
-            if ( !in_array($row["id"],$cartItems) ) {
+            if ( !array_key_exists($row["id"],$cartItems) ) {
                 $products[] = $row;
             }
         }
     }
+
+    #Verify GET for updating
+    if ($_SERVER["REQUEST_METHOD"] === "GET"){
+        if(isset($_GET["index"]) && isset($_GET["quantity"])){
+            $index = $_GET["index"];
+            $quantity = $_GET["quantity"];
+            addToCart($index, $quantity);
+            
+            header('Location: .');
+        }
+    }
     
+
 ?>
 
 <!DOCTYPE html>
@@ -53,9 +68,9 @@
                     </p>
                 </div>
                 
-                <div class="add-to-cart">
+                <a class="add-to-cart" href="<?= "index.php?index=".$row["id"]."&quantity=1" ?>">
                     Add to cart
-                </div>
+                </a>
             </div>
         <?php endforeach; ?>
     </div>

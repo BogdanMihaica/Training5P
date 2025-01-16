@@ -2,7 +2,7 @@ h1{
     text-align: center;
 }
 .products-container{
-    border : 6px solid rgb(212, 212, 212);
+    border : 6px solid rgb(255, 255, 255);
     border-radius: 5px;
     padding:1rem;
     margin-inline : 4rem;
@@ -17,7 +17,7 @@ h1{
 .product{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     border-radius: 5px;
     text-align: center;
     border: 1px solid black;
@@ -47,4 +47,5 @@ h1{
     -webkit-box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
     box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
+    text-decoration: none;
 }
