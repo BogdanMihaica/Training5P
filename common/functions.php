@@ -1,4 +1,34 @@
 <?php
+function fetch($conn, $columnName = null, $values = [], $not = false)
+{
+    $result = [];
+
+    if (is_null($columnName) && count($values) === 0) {
+        $stmt = $conn->prepare('SELECT * from products');
+        $stmt->execute();
+        $resultSet = $stmt->get_result();
+        while ($row = $resultSet->fetch_assoc()) {
+            $result[] = $row;
+        }
+    } else {
+        $type = gettype($values[0]) === 'integer' ? 'i' : 's';
+        $placeholders = implode(',', array_fill(0, count($values), '?'));
+        $typeString = str_repeat($type, count($values));
+        $isIn = $not ? 'NOT' : '';
+        $stmt = $conn->prepare("SELECT * from products where ($columnName) $isIn in ($placeholders)");
+        $stmt->bind_param($typeString, ...$values);
+        $stmt->execute();
+        $resultSet = $stmt->get_result();
+
+        while ($row = $resultSet->fetch_assoc()) {
+            $result[] = $row;
+        }
+
+        $stmt->close();
+    }
+
+    return $result;
+}
 function addToCart($id)
 {
     if (!in_array($id, $_SESSION['cart'])) {

@@ -15,41 +15,26 @@ if (isset($_SESSION['cart'])) {
 $products = [];
 
 if (!empty($cartItems)) {
-    $placeholders = implode(',', array_fill(0, count($cartItems), '?'));
-    $typeString = str_repeat('i', count($cartItems));
-
-    $stmt = $conn->prepare("SELECT * FROM products WHERE id NOT IN ($placeholders)");
-    $stmt->bind_param($typeString, ...$cartItems);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $products[] = $row;
-        }
-    }
-
-    $stmt->close();
+    $products = fetch($conn, "id", $cartItems, true);
 } else {
-    $stmt = $conn->prepare("SELECT * FROM products");
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $products[] = $row;
-        }
-    }
-
-    $stmt->close();
+    $products = fetch($conn);
 }
 
 #Verify GET for updating
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['index'])) {
+
+        $canAdd = false;
         $index = $_GET['index'];
-        addToCart($index);
+        foreach ($products as $product) {
+            if ($product['id'] == $index) {
+                $canAdd = true;
+                break;
+            }
+        }
+        if ($canAdd) {
+            addToCart($index);
+        }
         header('Location: .');
     }
 }

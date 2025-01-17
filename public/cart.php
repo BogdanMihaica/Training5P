@@ -14,19 +14,7 @@ if (isset($_SESSION['cart'])) {
 $result = [];
 
 if (count($cartItems) > 0) {
-
-    $placeholders = implode(',', array_fill(0, count($cartItems), '?'));
-    $typeString = str_repeat('i', count($cartItems));
-
-    $stmt = $conn->prepare("SELECT * FROM products WHERE id IN ($placeholders)");
-    $stmt->bind_param($typeString, ...$cartItems);
-
-    $stmt->execute();
-    $resultSet = $stmt->get_result();
-
-    while ($row = $resultSet->fetch_assoc()) {
-        $result[] = $row;
-    }
+    $result = fetch($conn, "id", $cartItems);
 }
 
 #Verify GET for removing
