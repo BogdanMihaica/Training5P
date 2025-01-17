@@ -17,9 +17,9 @@ if (count($cartItems) > 0) {
     $result = fetch($conn, "id", $cartItems);
 }
 
-#Verify GET for removing
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['index'])) {
+
         $index = $_GET['index'];
         removeFromCart($index);
         header('Location: cart.php');

@@ -1,5 +1,4 @@
 <?php
-
 require_once('../common/functions.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
