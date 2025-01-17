@@ -1,9 +1,8 @@
 <?php
-    require_once('credentials.php');
-    
-    $conn = mysqli_connect($host , $username, $password , $dbname);
+require_once('credentials.php');
 
-    if ( mysqli_connect_errno() ) {
-        die('Error connecting to the database.');
-    }
-?>
+$conn = mysqli_connect($host, $username, $password, $dbname);
+
+if (mysqli_connect_errno()) {
+    die('Error connecting to the database.');
+}
