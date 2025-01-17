@@ -32,6 +32,7 @@ if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
 
         if ($mail->send()) {
             $response = 1;
+            $_SESSION['cart'] = [];
         }
     } catch (Exception $e) {
         die("Debug error: {$mail->ErrorInfo}");
@@ -51,12 +52,13 @@ if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
 </head>
 
 <body>
+    <?php include('../components/language.php') ?>
     <?php if ($response == 1) : ?>
-        <h1>Your order has been placed succesfully!</h1>
+        <h1><?= translate("Your order has been placed succesfully!") ?></h1>
     <?php elseif ($response == 2) : ?>
-        <h1>You don't have any items in your cart!</h1>
+        <h1><?= translate("You don't have any items in your cart!") ?></h1>
     <?php else : ?>
-        <h1>Unknown error occured. Please try again later.</h1>
+        <h1><?= translate("Unknown error occurred. Please try again later.") ?></h1>
     <?php endif ?>
 </body>
 

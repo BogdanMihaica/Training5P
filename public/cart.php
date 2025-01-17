@@ -32,13 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/product_page.css">
+    <link rel="stylesheet" href="../styles/cart.css">
     <?php include('../utils/styles.php') ?>
     <title>Products</title>
 </head>
 
 <body>
-    <a href="index.php" class="view-cart">View product list</a>
-    <h1>Your cart items</h1>
+    <?php include('../components/language.php') ?>
+    <a href="index.php" class="view-cart"><?= translate("View product list") ?></a>
+    <h1><?= translate("Your cart items") ?></h1>
     <div class="products-container">
         <?php foreach ($result as $row) : ?>
             <div class="product">
@@ -58,13 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </div>
 
                 <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row['id']) ?>">
-                    Remove item
+                    <?= translate("Remove item") ?>
                 </a>
             </div>
         <?php endforeach ?>
     </div>
-    <form action="../common/checkout.php" method="post" class="checkout-container">
-        <button type="submit">Checkout</button>
+    <form action="./checkout.php" method="post" class="checkout-container">
+        <button type="submit"><?= translate("Checkout") ?></button>
     </form>
 </body>
 

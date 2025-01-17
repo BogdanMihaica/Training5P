@@ -1,4 +1,6 @@
 <?php
+
+
 function fetch($conn, $columnName = null, $values = [], $not = false)
 {
     $result = [];
@@ -53,4 +55,16 @@ function removeFromCart($index)
 function sanitize($string)
 {
     return htmlspecialchars($string);
+}
+
+function translate($string)
+{
+    require('../utils/translations.php');
+
+    if (isset($_SESSION['language']) && $_SESSION['language'] !== '') {
+        $lang = $_SESSION['language'];
+        return $translations[$string][$lang];
+    } else {
+        return $string;
+    }
 }
