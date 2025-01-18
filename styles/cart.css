@@ -17,24 +17,32 @@
 }
 
 .checkout-container{
+    margin-top: 2rem;
     width:100%;
     display:flex;
     justify-content: center;
 }
-.checkout-container button{
-    cursor: pointer;
-    width:150px;
-    height:50px;
-    font-size: 1.5rem;
-    background-color: rgb(131, 131, 255);
-    color:white;
-    border:none;
-    border-radius: 10px;
-}
-.checkout-container button:hover{
-    
-    background-color: rgb(83, 83, 194);
-    color:white;
-
+.checkout-button {
+    width:100px;
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #000000;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.checkout-button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
+}
+
+.checkout-button:active {
+    background-color: #ac2925;
+    transform: scale(1);
+}

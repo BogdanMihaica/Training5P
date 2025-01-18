@@ -33,11 +33,18 @@ $translations = [
         'es' => 'Vea la lista de productos'
     ],
     'Remove item' => [
-        'ro' => 'Retirar del carrito',
-        'es' => 'Quitar elemento'
+        'ro' => 'Elimina din cos',
+        'es' => 'Retirar del carrito'
     ],
     'Checkout' => [
         'ro' => 'Plaseaza comanda',
         'es' => 'Haz el pedido'
     ],
+    'Select quantity' => [
+        'ro' => 'Selecteaza cantitatea',
+        'es' => 'Seleccione cantidad'
+    ],
+
 ];
+
+$GLOBALS['translations'] = $translations;

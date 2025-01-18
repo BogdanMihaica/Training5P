@@ -1,7 +1,6 @@
 <?php
 require_once('../config/database.php');
 require_once('../common/functions.php');
-require_once('../config/manager.php');
 
 session_start();
 
@@ -14,14 +13,14 @@ if (isset($_SESSION['cart'])) {
 $result = [];
 
 if (count($cartItems) > 0) {
-    $result = fetch($conn, "id", $cartItems);
+    $result = fetch("id", array_keys($cartItems));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['index'])) {
 
-        $index = $_GET['index'];
-        removeFromCart($index);
+        removeFromCart($_GET['index']);
+
         header('Location: cart.php');
     }
 }
@@ -29,19 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/product_page.css">
-    <link rel="stylesheet" href="../styles/cart.css">
-    <?php include('../utils/styles.php') ?>
-    <title>Products</title>
-</head>
+<?php include('../utils/header.php') ?>
 
 <body>
     <?php include('../components/language.php') ?>
+
     <a href="index.php" class="view-cart"><?= translate("View product list") ?></a>
-    <h1><?= translate("Your cart items") ?></h1>
+    <h1 class="page-title"><?= translate("Your cart items") ?></h1>
     <div class="products-container">
         <?php foreach ($result as $row) : ?>
             <div class="product">
@@ -58,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <p class="product-price">
                         <?= sanitize($row['price']) . '$' ?>
                     </p>
+                    <p class="product-description">
+                        <?= 'Quantity: ' . sanitize($cartItems[sanitize($row['id'])]) ?>
+                    </p>
                 </div>
 
                 <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row['id']) ?>">
@@ -66,9 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
         <?php endforeach ?>
     </div>
-    <form action="./checkout.php" method="post" class="checkout-container">
-        <button type="submit"><?= translate("Checkout") ?></button>
-    </form>
+    <div class="checkout-container">
+        <a class="checkout-button" href="./checkout.php"><?= translate("Checkout") ?></a>
+    </div>
+
 </body>
 
 </html>

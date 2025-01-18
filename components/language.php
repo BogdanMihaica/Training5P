@@ -1,8 +1,8 @@
 <?php
 require_once('../common/functions.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $selected_language = sanitize($_POST['language']);
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['language'])) {
+    $selected_language = sanitize($_GET['language']);
 
     if ($selected_language === "en") {
         unset($_SESSION['language']);
@@ -10,17 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['language'] = $selected_language;
     }
 
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?')); // Redirect to the page without query parameters
+    exit;
 }
 ?>
 <div class="language-block" style="position: fixed; right: 0; z-index: 10;">
-    <form method="post">
-        <button type="submit" name="language" value="es">ES</button>
-    </form>
-    <form method="post">
-        <button type="submit" name="language" value="en">EN</button>
-    </form>
-    <form method="post">
-        <button type="submit" name="language" value="ro">RO</button>
-    </form>
+    <a href="?language=es">ES</a>
+    <a href="?language=en">EN</a>
+    <a href="?language=ro">RO</a>
 </div>

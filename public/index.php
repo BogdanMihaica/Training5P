@@ -12,51 +12,43 @@ if (isset($_SESSION['cart'])) {
 } else {
     $_SESSION['cart'] = [];
 }
+
 $products = [];
 
 if (!empty($cartItems)) {
-    $products = fetch($conn, "id", $cartItems, true);
+    $products = fetch("id", array_keys($cartItems), true);
 } else {
-    $products = fetch($conn);
+    $products = fetch();
 }
 
-#Verify GET for updating
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['index'])) {
+# Verify GET for updating
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET['quantity'])) {
 
-        $canAdd = false;
-        $index = $_GET['index'];
-        foreach ($products as $product) {
-            if ($product['id'] == $index) {
-                $canAdd = true;
-                break;
-            }
-        }
-        if ($canAdd) {
-            addToCart($index);
-        }
-        header('Location: .');
+    $index = $_GET['index'];
+
+    $foundProduct = fetch('id', [$index]);
+
+    if (count($foundProduct) !== 0) {
+        addToCart($index, $_GET['quantity']);
     }
+
+    header('Location: .');
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/product_page.css">
-    <?php include('../utils/styles.php') ?>
-    <title>Products</title>
-</head>
+<?php include('../utils/header.php') ?>
 
 <body>
+
     <?php include('../components/language.php') ?>
+
     <div class="page-container">
         <div class="big-circle"></div>
         <a href="cart.php" class="view-cart"><?= translate("View cart items") ?></a>
 
-        <h1><?= translate("List of available products") ?></h1>
+        <h1 class="page-title"><?= translate("List of available products") ?></h1>
 
         <div class="products-container">
             <?php foreach ($products as $row) : ?>
@@ -75,10 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             <?= sanitize($row['price']) . '$' ?>
                         </p>
                     </div>
-
-                    <a class="add-to-cart" href="index.php?index=<?= sanitize($row['id']) ?>">
-                        <?= translate("Add to cart") ?>
-                    </a>
+                    <div>
+                        <!-- The onclick attribute will add the value of the corresponding select input of the product -->
+                        <a class="add-to-cart" href="index.php?index=<?= sanitize($row['id']) ?>&quantity=" onclick="this.href += document.querySelector('.select-<?= sanitize($row['id']) ?>').value;">
+                            <?= translate("Add to cart") ?>
+                        </a>
+                        <?= translate("Select quantity") ?>
+                        <select class="<?= 'select-' . sanitize($row['id']) ?>">
+                            <?php for ($i = 1; $i <= 7; $i++) : ?>
+                                <option><?= $i ?></option>
+                            <?php endfor ?>
+                        </select>
+                    </div>
                 </div>
             <?php endforeach ?>
         </div>
