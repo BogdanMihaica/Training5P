@@ -1,44 +1,19 @@
 <?php
 session_start();
 
-require_once('../vendor/autoload.php');
-require_once('../vendor/phpmailer/src/Exception.php');
-require_once('../vendor/phpmailer/src/PHPMailer.php');
-require_once('../vendor/phpmailer/src/SMTP.php');
 require_once('../config/credentials.php');
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-
-$mail = new PHPMailer(true);
+require_once('../components/language.php');
 $response = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
-        $body = implode(' ', $_SESSION['cart']);
+    $to = $host_email;
+    $subject = 'Test Email';
+    $message = 'Comanda dumneavoastra a fost plasata cu succes.';
+    $headers = 'From: ' . $client_email;
 
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = $email;
-            $mail->Password = 'ebekiwpbhwaylhhj';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-            $mail->setFrom("client@noreply.com", 'Client');
-            $mail->addAddress($email);
-            $mail->Subject = 'New Order';
-            $mail->Body = $body;
-
-            if ($mail->send()) {
-                $response = 1;
-                $_SESSION['cart'] = [];
-            }
-        } catch (Exception $e) {
-            die("Debug error: {$mail->ErrorInfo}");
-        }
-    } elseif (count($_SESSION['cart']) === 0) {
+    if (count($_SESSION['cart']) === 0) {
         $response = 2;
+    } elseif (mail($to, $subject, $message, $headers)) {
+        $response = 1;
     }
 }
 
@@ -49,14 +24,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <?php include('../utils/header.php') ?>
 
 <body>
-    <?php include('../components/language.php') ?>
-    <?php if ($response == 1) : ?>
-        <h1><?= translate("Your order has been placed succesfully!") ?></h1>
-    <?php elseif ($response == 2) : ?>
-        <h1><?= translate("You don't have any items in your cart!") ?></h1>
-    <?php else : ?>
-        <h1><?= translate("Unknown error occurred. Please try again later.") ?></h1>
-    <?php endif ?>
+    <div class="checkout-page-container">
+        <div class="response">
+            <?php if ($response == 1) : ?>
+
+                <div class="background-circle green"></div>
+                <h1 class="checkout-message"><?= translate("Your order has been placed succesfully!") ?></h1>
+                <img src="../misc/svg/order-placed.svg" alt="order placed" class="response-image">
+
+            <?php elseif ($response == 2) : ?>
+
+                <div class="background-circle red"></div>
+                <h1 class="checkout-message"><?= translate("You don't have any items in your cart!") ?></h1>
+                <img src="../misc/png/error.png" alt="error occured" class="response-image">
+
+            <?php else : ?>
+
+                <div class="background-circle red"></div>
+                <h1 class="checkout-message"><?= translate("Unknown error occurred. Please try again later.") ?></h1>
+                <img src="../misc/png/error.png" alt="error occured" class="response-image">
+
+            <?php endif ?>
+        </div>
+    </div>
 </body>
 
 </html>
