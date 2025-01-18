@@ -8,6 +8,7 @@ $cartItems = [];
 
 if (isset($_SESSION['cart'])) {
     #$_SESSION['cart'] = [];
+    print_r($_SESSION['cart']);
     $cartItems = $_SESSION['cart'];
 } else {
     $_SESSION['cart'] = [];

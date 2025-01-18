@@ -56,18 +56,10 @@ function addToCart($id, $quantity)
 
 function removeFromCart($index)
 {
-    $cartItems = $_SESSION['cart'];
-
-    for ($i = 0; $i < count($cartItems); $i += 1) {
-        if (array_keys($cartItems)[$i] == $index) {
-            unset($cartItems[$index]);
-            break;
-        }
+    if (isset($_SESSION['cart'][$index])) {
+        unset($_SESSION['cart'][$index]);
     }
-
-    $_SESSION['cart'] = array_values($cartItems);
 }
-
 function sanitize($string)
 {
     return htmlspecialchars($string);
