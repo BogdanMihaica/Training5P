@@ -6,7 +6,7 @@ require_once '../config/database.php';
  * Function for querying from table 'products'. The parameter 'not' controlls whether or not the column specified should be
  * present in the 'values' array
  * 
- * @param mixed $conn
+ * @param mysqli $conn
  * @param string $columnName
  * @param array $values
  * @param bool $not

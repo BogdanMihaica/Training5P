@@ -6,24 +6,21 @@ session_start();
 
 $cartItems = [];
 
-if (isset($_SESSION['cart'])) {
-    #$_SESSION['cart'] = [];
-    print_r($_SESSION['cart']);
-    $cartItems = $_SESSION['cart'];
-} else {
-    $_SESSION['cart'] = [];
-}
-
 $products = [];
 
-if (!empty($cartItems)) {
-    $products = fetch("id", array_keys($cartItems), true);
-} else {
-    $products = fetch();
-}
-
-# Verify GET for updating
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET['quantity'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_GET['quantity'])) {
+    if (isset($_SESSION['cart'])) {
+        #$_SESSION['cart'] = [];
+        $cartItems = $_SESSION['cart'];
+    } else {
+        $_SESSION['cart'] = [];
+    }
+    if (!empty($cartItems)) {
+        $products = fetch("id", array_keys($cartItems), true);
+    } else {
+        $products = fetch();
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET['quantity'])) {
 
     $index = $_GET['index'];
 
@@ -55,20 +52,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
             <?php foreach ($products as $row) : ?>
                 <div class="product">
                     <div class="product-details">
-                        <div class="product-image">
-                            <!-- Image will go here -->
+                        <div class="product-image-container">
+                            <img class="product-image" src="<?= 'src/images/' . sanitize($row['id']) . '.jpg' ?>" alt="<?= sanitize($row['title']) ?>">
                         </div>
                         <p class="product-title">
                             <?= sanitize($row['title']) ?>
                         </p>
+                    </div>
+                    <div>
                         <p class="product-description">
                             <?= sanitize($row['description']) ?>
                         </p>
                         <p class="product-price">
                             <?= sanitize($row['price']) . '$' ?>
                         </p>
-                    </div>
-                    <div>
                         <!-- The onclick attribute will add the value of the corresponding select input of the product -->
                         <a class="add-to-cart" href="index.php?index=<?= sanitize($row['id']) ?>&quantity=" onclick="this.href += document.querySelector('.select-<?= sanitize($row['id']) ?>').value;">
                             <?= translate("Add to cart") ?>

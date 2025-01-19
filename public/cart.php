@@ -39,26 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <?php foreach ($result as $row) : ?>
             <div class="product">
                 <div class="product-details">
-                    <div class="product-image">
-                        <!-- Image will go here -->
+                    <div class="product-image-container">
+                        <img class="product-image" src="<?= 'src/images/' . sanitize($row['id']) . '.jpg' ?>" alt="<?= sanitize($row['title']) ?>">
                     </div>
                     <p class="product-title">
                         <?= sanitize($row['title']) ?>
                     </p>
+                    <p class="product-description">
+                        <?= 'Quantity: ' . sanitize($cartItems[sanitize($row['id'])]) ?>
+                    </p>
+                </div>
+                <div>
                     <p class="product-description">
                         <?= sanitize($row['description']) ?>
                     </p>
                     <p class="product-price">
                         <?= sanitize($row['price']) . '$' ?>
                     </p>
-                    <p class="product-description">
-                        <?= 'Quantity: ' . sanitize($cartItems[sanitize($row['id'])]) ?>
-                    </p>
+                    <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row['id']) ?>">
+                        <?= translate("Remove item") ?>
+                    </a>
                 </div>
 
-                <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row['id']) ?>">
-                    <?= translate("Remove item") ?>
-                </a>
             </div>
         <?php endforeach ?>
     </div>

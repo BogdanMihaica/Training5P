@@ -3,16 +3,18 @@ session_start();
 
 require_once('../config/credentials.php');
 require_once('../components/language.php');
+require_once('../utils/email_template.php');
+
 $response = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $to = $host_email;
     $subject = 'Test Email';
-    $message = 'Comanda dumneavoastra a fost plasata cu succes.';
+    $body = fill_email("Client", $client_email);
     $headers = 'From: ' . $client_email;
 
     if (count($_SESSION['cart']) === 0) {
         $response = 2;
-    } elseif (mail($to, $subject, $message, $headers)) {
+    } elseif (mail($to, $subject, $body, $headers)) {
         $response = 1;
     }
 }
