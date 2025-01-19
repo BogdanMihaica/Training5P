@@ -49,7 +49,7 @@ function fetch($columnName = null, $values = [], $not = false)
 
 function addToCart($id, $quantity)
 {
-    if (!in_array($id, $_SESSION['cart'])) {
+    if (!in_array($id, array_keys($_SESSION['cart']))) {
         $_SESSION['cart'][$id] = $quantity;
     }
 }

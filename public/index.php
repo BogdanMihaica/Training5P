@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
     if (isset($_SESSION['cart'])) {
         #$_SESSION['cart'] = [];
         $cartItems = $_SESSION['cart'];
+        print_r($cartItems);
     } else {
         $_SESSION['cart'] = [];
     }
@@ -43,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
     <?php include('../components/language.php') ?>
 
     <div class="page-container">
-        <div class="big-circle"></div>
+        <div class="big-circle top-right"></div>
+        <div class="big-circle bottom-left"></div>
         <a href="cart.php" class="view-cart"><?= translate("View cart items") ?></a>
 
         <h1 class="page-title"><?= translate("List of available products") ?></h1>
@@ -67,8 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
                             <?= sanitize($row['price']) . '$' ?>
                         </p>
                         <!-- The onclick attribute will add the value of the corresponding select input of the product -->
-                        <a class="add-to-cart" href="index.php?index=<?= sanitize($row['id']) ?>&quantity=" onclick="this.href += document.querySelector('.select-<?= sanitize($row['id']) ?>').value;">
-                            <?= translate("Add to cart") ?>
+                        <a class="add-to-cart" href="index.php?index=<?= sanitize($row['id']) ?>&quantity="
+                            onclick="this.href += document.querySelector('.select-<?= sanitize($row['id']) ?>').value;">
+                            <span class="left-part">
+                                <img src="../misc/svg/shopping-cart.svg" alt="Icon" class="svg-icon">
+                            </span>
+                            <span class="right-part">
+                                <?= translate("Add to cart") . $row['id'] ?>
+                            </span>
                         </a>
                         <?= translate("Select quantity") ?>
                         <select class="<?= 'select-' . sanitize($row['id']) ?>">

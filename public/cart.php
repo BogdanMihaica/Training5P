@@ -31,7 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <?php include('../utils/header.php') ?>
 
 <body>
+
     <?php include('../components/language.php') ?>
+
+    <div class="big-circle top-right"></div>
+    <div class="big-circle bottom-left"></div>
 
     <a href="index.php" class="view-cart"><?= translate("View product list") ?></a>
     <h1 class="page-title"><?= translate("Your cart items") ?></h1>
@@ -46,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <?= sanitize($row['title']) ?>
                     </p>
                     <p class="product-description">
-                        <?= 'Quantity: ' . sanitize($cartItems[sanitize($row['id'])]) ?>
+                        <?= translate('Quantity:') . ' ' . sanitize($cartItems[sanitize($row['id'])]) ?>
                     </p>
                 </div>
                 <div>

@@ -44,6 +44,10 @@ $translations = [
         'ro' => 'Selecteaza cantitatea',
         'es' => 'Seleccione cantidad'
     ],
+    'Quantity:' => [
+        'ro' => 'Cantitate:',
+        'es' => 'Cantidad:'
+    ],
 
 ];
 

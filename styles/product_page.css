@@ -34,7 +34,6 @@
     width:220px;
     height:450px;
     padding:1rem;
-    box-shadow: 10px 13px 43px -19px rgba(181, 166, 255, 0.75);
 }
 .product-title{
     font-size:1.6rem;
@@ -55,23 +54,41 @@
 .product-description{
     margin-bottom: 1rem;
 }
-.add-to-cart{
+.add-to-cart {
     cursor: pointer;
-    width:100%;
-    height:50px;
-    display:flex;
-    justify-content: center;
+    width: 100%;
+    height: 50px;
+    display: flex;
     align-items: center;
-    background: rgb(10,0,187);
     background: linear-gradient(90deg, rgba(10,0,187,1) 0%, rgba(22,22,255,1) 23%, rgba(0,212,255,1) 100%);
-    color:white;
-    font-size:1.2rem;
+    color: white;
+    font-size: 1.2rem;
     border-radius: 10px;
-    -webkit-box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
-    box-shadow: 10px 13px 43px -19px rgba(0,0,0,0.75);
+    box-shadow: 10px 13px 43px -19px rgba(0, 0, 0, 0.75);
     text-decoration: none;
     margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.add-to-cart .left-part {
+    background-color: yellow;
+    flex: 0 0 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.add-to-cart .svg-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.add-to-cart .right-part {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .view-cart{
@@ -84,9 +101,9 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    background: rgb(10,0,187);
-    background: linear-gradient(90deg, rgba(12, 168, 54,0.3) 0%, rgba(66, 225, 66,0.3) 100%);
-    color:rgb(0, 41, 15);
+    background: rgb(94, 86, 250);
+    background: linear-gradient(90deg, rgba(12, 69, 168, 0.3) 0%, rgba(122, 66, 225, 0.3) 100%);
+    color:rgb(0, 23, 41);
     font-size:1.2rem;
     border-radius: 10px;
     text-decoration: none;
@@ -94,13 +111,21 @@
 
 .big-circle{
     z-index: -100;
-    position: absolute;
+    position: fixed;
     border-radius: 50%;
-    right:-200px;
-    top:-100px;
     width:800px;
     height:800px;
+    overflow-x: hidden;
+}
+.bottom-left{
+    background: rgba(187, 187, 0, 0.2);
+    background: linear-gradient(90deg, rgba(255, 254, 176, 0.2) 0%, rgba(255, 252, 194, 0.2) 23%, rgba(255, 166, 0, 0.2) 100%);
+    bottom:-200px;
+    left:-200px;
+}
+.top-right{
     background: rgba(10,0,187,0.2);
     background: linear-gradient(90deg, rgba(180, 176, 255, 0.2) 0%, rgba(194, 194, 255, 0.2) 23%, rgba(0,212,255,0.2) 100%);
-    overflow-x: hidden;
+    right:-200px;
+    top:-200px;
 }
