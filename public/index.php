@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
     if (isset($_SESSION['cart'])) {
         #$_SESSION['cart'] = [];
         $cartItems = $_SESSION['cart'];
-        print_r($cartItems);
     } else {
         $_SESSION['cart'] = [];
     }
@@ -75,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
                                 <img src="../misc/svg/shopping-cart.svg" alt="Icon" class="svg-icon">
                             </span>
                             <span class="right-part">
-                                <?= translate("Add to cart") . $row['id'] ?>
+                                <?= translate("Add to cart") ?>
                             </span>
                         </a>
                         <?= translate("Select quantity") ?>
