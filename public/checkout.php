@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $response = 2;
     } elseif (mail($to, $subject, $body, $headers)) {
         $response = 1;
+        $_SESSION['cart'] = [];
     }
 }
 

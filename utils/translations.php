@@ -48,7 +48,26 @@ $translations = [
         'ro' => 'Cantitate:',
         'es' => 'Cantidad:'
     ],
-
+    'Username' => [
+        'ro' => 'Nume utilizator',
+        'es' => 'Usuario'
+    ],
+    'Password' => [
+        'ro' => 'Parola',
+        'es' => 'Contraseña'
+    ],
+    'Welcome back!' => [
+        'ro' => 'Bine ai revenit!',
+        'es' => '¡Bienvenido de nuevo!'
+    ],
+    'Enter your password' => [
+        'ro' => 'Introdu parola',
+        'es' => 'Ingresa tu contraseña'
+    ],
+    'Enter your username' => [
+        'ro' => 'Introdu numele de utilizator',
+        'es' => 'ingresa tu nombre de usuario'
+    ],
 ];
 
 $GLOBALS['translations'] = $translations;

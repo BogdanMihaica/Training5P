@@ -5,5 +5,6 @@
     <link rel="stylesheet" href="../styles/universal.css">
     <link rel="stylesheet" href="../styles/cart.css">
     <link rel="stylesheet" href="../styles/checkout.css">
+    <link rel="stylesheet" href="../styles/login.css">
     <title>Product Project</title>
 </head>

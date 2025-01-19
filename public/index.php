@@ -43,8 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
     <?php include('../components/language.php') ?>
 
     <div class="page-container">
+
         <div class="big-circle top-right"></div>
         <div class="big-circle bottom-left"></div>
+
         <a href="cart.php" class="view-cart"><?= translate("View cart items") ?></a>
 
         <h1 class="page-title"><?= translate("List of available products") ?></h1>
