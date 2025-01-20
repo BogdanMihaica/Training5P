@@ -9,7 +9,7 @@ $response = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $to = $host_email;
     $subject = 'Test Email';
-    $body = get_email_body('Client', $client_email);
+    $body = getEmailBody('Client', $client_email);
     $headers = 'From: ' . $client_email;
 
     if (count($_SESSION['cart']) === 0) {
@@ -27,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <?php include('../utils/header.php') ?>
 
 <body>
+    <?php include('../components/background.php') ?>
+
     <div class="checkout-page-container">
         <div class="response">
             <?php if ($response == 1) : ?>

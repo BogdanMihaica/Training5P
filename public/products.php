@@ -16,7 +16,7 @@ $products = [];
 if ($_SERVER['REQUEST_METHOD'] === "GET" && !isset($_GET['id'])) {
     $products = fetch();
 } else if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
-    if (!delete_product($_GET['id'])) {
+    if (!deleteProduct($_GET['id'])) {
         $error_message = 'Unable to delete product with id ' . $_GET['id'];
     } else {
         $products = fetch();
@@ -48,8 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
 
     <?php include('../components/admin-navbar.php') ?>
 
-    <div class="big-circle top-right"></div>
-    <div class="big-circle bottom-left"></div>
+    <?php include('../components/background.php') ?>
 
     <h1 class="title">Products Dashboard</h1>
 
@@ -74,7 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
             ?>
                 <tr>
                     <td><?= sanitize($product['id']) ?></td>
-                    <td><?= sanitize($product['title']) ?></td>
+                    <td>
+                        <a href="<?= 'product.php?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
+                    </td>
                     <td class="produt-image-entry">
                         <img src="<?= './src/images/' . sanitize($product['id']) . '.jpg' ?>" alt="product image">
                     </td>

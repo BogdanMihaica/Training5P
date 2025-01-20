@@ -8,5 +8,6 @@
     <link rel="stylesheet" href="../styles/login.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
     <link rel="stylesheet" href="../styles/admin_navbar.css">
+    <link rel="stylesheet" href="../styles/edit.css">
     <title>Product Project</title>
 </head>

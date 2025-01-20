@@ -13,7 +13,7 @@ if (isset($_SESSION['cart'])) {
 $result = [];
 
 if (count($cartItems) > 0) {
-    $result = fetch("id", array_keys($cartItems));
+    $result = fetch('id', array_keys($cartItems));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {

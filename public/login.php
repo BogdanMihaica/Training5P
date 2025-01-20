@@ -5,9 +5,12 @@ require_once('../config/database.php');
 session_start();
 
 $error_message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
+if (isset($_SESSION['admin']) &&  $_SESSION['admin'] == true) {
+    header('Location: .');
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
     if ($_POST['username'] === $admin_username && password_verify($_POST['password'], $admin_password)) {
         $_SESSION['admin'] = true;
+        header('Location: products.php');
     } else {
         $error_message = 'Username or password don\'t match!';
     }
@@ -19,8 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
 <?php include('../utils/header.php') ?>
 
 <body>
-    <div class="big-circle top-right"></div>
-    <div class="big-circle bottom-left"></div>
+    <?php include('../components/background.php') ?>
 
     <?php include('../components/language.php') ?>
 

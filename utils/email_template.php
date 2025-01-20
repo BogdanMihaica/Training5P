@@ -3,11 +3,12 @@ require_once('../common/functions.php');
 
 /**
  * This function fills the body of a html with user data on checkout, including their username, email and cart items.
+ * 
  * @param string $user
  * @param string $email
  * @return string
  */
-function get_email_body($user, $email)
+function getEmailBody($user, $email)
 {
     if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
         return '<p>Your cart is empty.</p>';

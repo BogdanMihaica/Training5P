@@ -2,12 +2,12 @@
 
 require_once '../utils/translations.php';
 require_once '../config/database.php';
+
 /**
- * Function for querying from table 'products'. The parameter 'not' controlls whether or not the column specified should be
+ * Function for querying from table 'products'. The parameter 'not' controls whether or not the column specified should be
  * present in the 'values' array
  * 
- * @param mysqli $conn
- * @param string $columnName
+ * @param string|null $columnName
  * @param array $values
  * @param bool $not
  * @return array
@@ -15,52 +15,34 @@ require_once '../config/database.php';
 function fetch($columnName = null, $values = [], $not = false)
 {
     $result = [];
-    $conn = $GLOBALS['conn'];
 
     if (is_null($columnName) && count($values) === 0) {
-        $stmt = $conn->prepare('SELECT * from products');
-        $stmt->execute();
-        $resultSet = $stmt->get_result();
-        while ($row = $resultSet->fetch_assoc()) {
-            $result[] = $row;
-        }
+        $stmt = $GLOBALS['conn']->query('SELECT * FROM products');
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
-
-        $type = is_int($values[0]) ? 'i' : 's';
         $placeholders = implode(',', array_fill(0, count($values), '?'));
-        $typeString = str_repeat($type, count($values));
         $isIn = $not ? 'NOT' : '';
 
-        $stmt = $conn->prepare("SELECT * from products where ($columnName) $isIn in ($placeholders)");
-        $stmt->bind_param($typeString, ...$values);
-        $stmt->execute();
+        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM products WHERE {$columnName} {$isIn} IN ({$placeholders})");
+        $stmt->execute($values);
 
-        $result_set = $stmt->get_result();
-
-        while ($row = $result_set->fetch_assoc()) {
-            $result[] = $row;
-        }
-
-        $stmt->close();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $result;
 }
 
 /**
- * This function receives a parameter 'value' which is an id from the products table an deletes the entry with that speific id
- * and it's corresponding image
+ * This function receives a parameter 'value' which is an id from the products table and deletes the entry with that specific id
+ * and its corresponding image
+ *   
  * @param integer $value
  * @return bool
  */
-function delete_product($value)
+function deleteProduct($value)
 {
-    $conn = $GLOBALS['conn'];
-
-    $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
-    $stmt->bind_param('i', $value);
-
-    $result = $stmt->execute();
+    $stmt = $GLOBALS['conn']->prepare('DELETE FROM products WHERE id = ?');
+    $result = $stmt->execute([$value]);
 
     if (!$result) {
         die('Failed to delete item');
@@ -71,7 +53,6 @@ function delete_product($value)
         }
     }
 
-    $stmt->close();
     return $result;
 }
 

@@ -8,19 +8,7 @@ $cartItems = [];
 
 $products = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_GET['quantity'])) {
-    if (isset($_SESSION['cart'])) {
-        #$_SESSION['cart'] = [];
-        $cartItems = $_SESSION['cart'];
-    } else {
-        $_SESSION['cart'] = [];
-    }
-    if (!empty($cartItems)) {
-        $products = fetch('id', array_keys($cartItems), true);
-    } else {
-        $products = fetch();
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET['quantity'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET['quantity'])) {
 
     $index = $_GET['index'];
 
@@ -31,6 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
     }
 
     header('Location: .');
+} else {
+    if (isset($_SESSION['cart'])) {
+        #$_SESSION['cart'] = [];
+        $cartItems = $_SESSION['cart'];
+    } else {
+        $_SESSION['cart'] = [];
+    }
+
+    if (!empty($cartItems)) {
+        $products = fetch('id', array_keys($cartItems), true);
+    } else {
+        $products = fetch();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -42,10 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
 
     <?php include('../components/language.php') ?>
 
-    <div class="page-container">
+    <?php include('../components/background.php') ?>
 
-        <div class="big-circle top-right"></div>
-        <div class="big-circle bottom-left"></div>
+    <div class="page-container">
 
         <a href="cart.php" class="view-cart"><?= translate("View cart items") ?></a>
 
