@@ -26,7 +26,7 @@ function fetch($columnName = null, $values = [], $not = false)
         }
     } else {
 
-        $type = gettype($values[0]) === 'integer' ? 'i' : 's';
+        $type = is_int($values[0]) ? 'i' : 's';
         $placeholders = implode(',', array_fill(0, count($values), '?'));
         $typeString = str_repeat($type, count($values));
         $isIn = $not ? 'NOT' : '';
@@ -35,15 +35,43 @@ function fetch($columnName = null, $values = [], $not = false)
         $stmt->bind_param($typeString, ...$values);
         $stmt->execute();
 
-        $resultSet = $stmt->get_result();
+        $result_set = $stmt->get_result();
 
-        while ($row = $resultSet->fetch_assoc()) {
+        while ($row = $result_set->fetch_assoc()) {
             $result[] = $row;
         }
 
         $stmt->close();
     }
 
+    return $result;
+}
+
+/**
+ * This function receives a parameter 'value' which is an id from the products table an deletes the entry with that speific id
+ * and it's corresponding image
+ * @param integer $value
+ * @return bool
+ */
+function delete_product($value)
+{
+    $conn = $GLOBALS['conn'];
+
+    $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
+    $stmt->bind_param('i', $value);
+
+    $result = $stmt->execute();
+
+    if (!$result) {
+        die('Failed to delete item');
+    } else {
+        $file_path = 'src/images/' . $value . '.jpg';
+        if (file_exists($file_path)) {
+            unlink($file_path);
+        }
+    }
+
+    $stmt->close();
     return $result;
 }
 
@@ -60,6 +88,7 @@ function removeFromCart($index)
         unset($_SESSION['cart'][$index]);
     }
 }
+
 function sanitize($string)
 {
     return htmlspecialchars($string);

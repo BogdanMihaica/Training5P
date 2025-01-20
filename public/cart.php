@@ -16,13 +16,9 @@ if (count($cartItems) > 0) {
     $result = fetch("id", array_keys($cartItems));
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['index'])) {
-
-        removeFromCart($_GET['index']);
-
-        header('Location: cart.php');
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
+    removeFromCart($_GET['index']);
+    header('Location: cart.php');
 }
 ?>
 <!DOCTYPE html>

@@ -1,0 +1,81 @@
+.admin-products-table {
+    width: 100%;
+    border-collapse: separate;
+}
+
+.admin-products-table th, .admin-products-table td {
+    padding: 10px;
+    text-align: left;
+    background-color: #f9f9f9;
+}
+
+.admin-products-table th {
+    background-color: #d3d3d3;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.admin-products-table tr {
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-products-table td {
+    border-bottom: 1px solid #ddd;
+}
+
+.produt-image-entry img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.delete-button {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+h1.title {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #333;
+}
+
+.admin-products-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    column-gap: 0.5rem;
+    align-items: flex-start;
+    justify-content: center;
+}
+.arrow{
+    cursor: pointer;
+    width:100px;
+    height:30px;
+    background-color: #848484;
+    border-radius: 10px;
+    color:white;
+    font-size: 1.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+}
+.arrow:hover{
+    background-color: rgb(25, 43, 181);
+}
+.arrow:active{
+    background-color: rgb(75, 85, 167);
+}
+a{
+    text-decoration: none;
+}

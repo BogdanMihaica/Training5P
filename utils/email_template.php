@@ -7,7 +7,7 @@ require_once('../common/functions.php');
  * @param string $email
  * @return string
  */
-function fill_email($user, $email)
+function get_email_body($user, $email)
 {
     if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
         return '<p>Your cart is empty.</p>';

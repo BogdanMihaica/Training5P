@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['index']) && !isset($_G
         $_SESSION['cart'] = [];
     }
     if (!empty($cartItems)) {
-        $products = fetch("id", array_keys($cartItems), true);
+        $products = fetch('id', array_keys($cartItems), true);
     } else {
         $products = fetch();
     }

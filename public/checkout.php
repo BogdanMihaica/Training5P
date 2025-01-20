@@ -9,7 +9,7 @@ $response = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $to = $host_email;
     $subject = 'Test Email';
-    $body = fill_email("Client", $client_email);
+    $body = get_email_body('Client', $client_email);
     $headers = 'From: ' . $client_email;
 
     if (count($_SESSION['cart']) === 0) {

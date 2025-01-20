@@ -2,14 +2,14 @@
 require_once('../common/functions.php');
 require_once('../config/database.php');
 
+session_start();
+
 $error_message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        if ($_POST['username'] === $admin_username && password_verify($_POST['password'], $admin_password)) {
-            $_SESSION['username'] = $username;
-        } else {
-            $error_message = 'Username or password don\'t match!';
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
+    if ($_POST['username'] === $admin_username && password_verify($_POST['password'], $admin_password)) {
+        $_SESSION['admin'] = true;
+    } else {
+        $error_message = 'Username or password don\'t match!';
     }
 }
 ?>

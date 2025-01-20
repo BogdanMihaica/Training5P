@@ -29,10 +29,14 @@
     justify-content: space-between;
     border-radius: 5px;
     text-align: center;
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgb(216, 216, 216);
     width:220px;
     height:450px;
     padding:1rem;
+    transition: all 0.5s ease;
+}
+.product:hover{
+    box-shadow: 10px 5px 20px -19px rgba(0, 0, 0, 0.75);
 }
 .product-title{
     font-size:1.6rem;
