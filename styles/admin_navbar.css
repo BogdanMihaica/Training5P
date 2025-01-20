@@ -1,0 +1,44 @@
+.admin-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333; 
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1000;
+    height:50px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: all 0.5s ease;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.nav-item:hover{
+    background-color: #525252;
+
+}
+.nav-link:first-child{
+    margin-left:3rem;
+}
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.nav-link-text {
+    font-size: 14px;
+}
+

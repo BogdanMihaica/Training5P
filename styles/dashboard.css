@@ -40,10 +40,11 @@
 }
 
 h1.title {
+    margin-top: 5rem;
     text-align: center;
     font-family: 'Arial', sans-serif;
     font-size: 2rem;
-    margin: 20px 0;
+    margin-inline: 20px;
     color: #333;
 }
 

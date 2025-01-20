@@ -7,5 +7,6 @@
     <link rel="stylesheet" href="../styles/checkout.css">
     <link rel="stylesheet" href="../styles/login.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/admin_navbar.css">
     <title>Product Project</title>
 </head>

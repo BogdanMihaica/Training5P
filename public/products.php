@@ -19,10 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && !isset($_GET['id'])) {
     if (!delete_product($_GET['id'])) {
         $error_message = 'Unable to delete product with id ' . $_GET['id'];
     } else {
+        $products = fetch();
+        $total_products = count($products);
+
+        $total_pages = ceil($total_products / $prod_per_page);
+
+        if ($current_page >= $total_pages) {
+            $current_page = max(0, $total_pages - 1);
+        }
+
         header('Location: products.php?page=' . $current_page);
+        exit();
     }
 }
-
 if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
     $current_page = intval($_GET['page']);
     if ($current_page * $prod_per_page >= count($products)) {
@@ -36,6 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
 <?php include('../utils/header.php') ?>
 
 <body>
+
+    <?php include('../components/admin-navbar.php') ?>
+
     <div class="big-circle top-right"></div>
     <div class="big-circle bottom-left"></div>
 
@@ -45,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
 
     <div class="admin-products-container">
         <a href="<?= 'products.php?page=' . ($current_page > 0 ? ($current_page - 1) : 0) ?>">
-
             <div class="arrow">&#8678;</div>
         </a>
         <table class="admin-products-table">
@@ -70,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
                     <td><?= sanitize($product['description']) ?></td>
                     <td><?= sanitize($product['price']) ?></td>
                     <td>
-                        <a href="<?= 'products.php?id=' . sanitize($product['id']) ?>">
+                        <a href="<?= 'products.php?page=' . $current_page . '&id=' . sanitize($product['id']) ?>">
                             <img class="delete-button" src="../misc/png/delete.png" alt="delete button">
                         </a>
                     </td>

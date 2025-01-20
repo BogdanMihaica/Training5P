@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['language'])) {
         $_SESSION['language'] = $selected_language;
     }
 
-    header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?')); // Redirect to the page without query parameters
+    header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
     exit;
 }
 ?>
