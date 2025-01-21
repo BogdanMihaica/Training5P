@@ -1,15 +1,58 @@
 <?php
 require_once('../config/database.php');
 require_once('../common/functions.php');
+require_once('../utils/email_template.php');
 
 session_start();
 
 $cartItems = [];
 $result = [];
+$error = ['name' => '', 'email' => ''];
+$config = $data['mail'];
+$response = -1;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     removeFromCart($_GET['index']);
     header('Location: cart.php');
+} elseif (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['customer_name']) &&
+    isset($_POST['customer_email'])
+) {
+    if (!empty(trim($_POST['customer_name'])) && !empty(trim($_POST['customer_email']))) {
+
+        $to = $config['admin_email'];
+        $subject = 'Test Email';
+        $body = getEmailBody('Client', $_POST['customer_email']);
+        $headers = 'From: ' . $_POST['customer_email'];
+
+        if (count($_SESSION['cart']) === 0) {
+            $response = 2;
+        } elseif (mail($to, $subject, $body, $headers)) {
+
+            $orderId = insertOrder($_POST['customer_name'], $_POST['customer_email']);
+
+            if ($orderId > 0) {
+                insertOrdersProducts($_SESSION['cart'], $orderId);
+            }
+
+            $response = 1;
+            $_SESSION['cart'] = [];
+        } else {
+            $response = 0;
+        }
+    } else {
+
+        if (empty(trim($_POST['customer_name']))) {
+            $error['name'] = 'You must specify your name';
+        }
+
+        if (empty(trim($_POST['customer_email']))) {
+            $error['email'] = 'You must specify your email';
+        } else if (!filter_var($_POST['customer_email'], FILTER_VALIDATE_EMAIL)) {
+            $error['email'] = 'Invalid email format';
+        }
+    }
 } elseif (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
     $cartItems = $_SESSION['cart'];
     $result = fetch('products', 'id', array_keys($cartItems));
@@ -61,23 +104,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
             </div>
         <?php endforeach ?>
     </div>
+
     <div class="checkout-container">
-        <form action="./checkout.php" method="POST" class="checkout-form">
+        <form method="POST" class="checkout-form">
             <h2><?= translate("Please fill in your details to checkout.") ?></h2>
 
             <label for="customer-name"><?= translate('Name') . ':' ?></label>
             <input type="text" id="customer-name" name="customer_name" placeholder="<?= translate('Enter your name') ?>">
-            <p class="error"><?= $error['name'] ?></p>
+            <p class="error"><?= translate($error['name']) ?></p>
 
             <label for="customer-email"><?= translate('Email') . ':' ?></label>
-            <input type="email" id="customer-email" name="customer_email" placeholder="<?= translate('Enter your email') ?>">
-            <p class="error"><?= $error['email'] ?></p>
+            <input type="text" id="customer-email" name="customer_email" placeholder="<?= translate('Enter your email') ?>">
+            <p class="error"><?= translate($error['email']) ?></p>
 
             <button type="submit" class="checkout-button"><?= translate("Checkout") ?></button>
         </form>
     </div>
 
+    <?php if (empty($error['name']) && empty($error['email']) && $response >= 0) : ?>
+        <div class="checkout-page-container">
+            <div class="response">
+                <?php if ($response == 1) : ?>
 
+                    <div class="background-circle green"></div>
+                    <h1 class="checkout-message"><?= translate("Your order has been placed succesfully!") ?></h1>
+                    <img src="../misc/svg/order-placed.svg" alt="order placed" class="response-image">
+
+                <?php elseif ($response == 2) : ?>
+
+                    <div class="background-circle red"></div>
+                    <h1 class="checkout-message"><?= translate("You don't have any items in your cart!") ?></h1>
+                    <img src="../misc/png/error.png" alt="error occured" class="response-image">
+
+                <?php else : ?>
+
+                    <div class="background-circle red"></div>
+                    <h1 class="checkout-message"><?= translate("Unknown error occurred. Please try again later.") ?></h1>
+                    <img src="../misc/png/error.png" alt="error occured" class="response-image">
+
+                <?php endif ?>
+            </div>
+        </div>
+    <?php endif ?>
 </body>
 
 </html>

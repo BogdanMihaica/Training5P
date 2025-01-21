@@ -201,6 +201,15 @@ $translations = [
     'Add' => [
         'ro' => 'Adauga'
     ],
+    'You must specify your name' => [
+        'ro' => 'Numele tau trebuie specificat'
+    ],
+    'You must specify your email' => [
+        'ro' => 'Email-ul tau trebuie specificat'
+    ],
+    'Invalid email format' => [
+        'ro' => 'Email invalid'
+    ],
 ];
 
 $GLOBALS['translations'] = $translations;
