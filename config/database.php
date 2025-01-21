@@ -1,15 +1,11 @@
 <?php
 require_once('credentials.php');
 
-// $conn = mysqli_connect($host, $username, $password, $dbname);
-
-// if (mysqli_connect_errno()) {
-//     die('Error connecting to the database.');
-// }
-
+$data = require_once('config.php');
+$db_config = $data['database'];
 
 try {
-    $conn = new PDO('mysql:host=127.0.0.1;dbname=' . $dbname, $username, $password);
+    $conn = new PDO($db_config['connection'] . ';dbname=' . $db_config['dbname'], $db_config['username'], $db_config['password']);
 } catch (PDOException $e) {
     die('' . $e->getMessage());
 }

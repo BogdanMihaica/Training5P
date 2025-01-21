@@ -40,7 +40,7 @@
 }
 
 h1.title {
-    margin-top: 5rem;
+
     text-align: center;
     font-family: 'Arial', sans-serif;
     font-size: 2rem;
@@ -79,4 +79,26 @@ h1.title {
 }
 a{
     text-decoration: none;
+}
+
+.dashboard-title{
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.add-product{
+    width : 30px;
+    height: 30px;
+    background-color: #333;
+    color: white;
+    font-size: 2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.add-product:hover{
+    background-color: #777;
 }

@@ -4,12 +4,53 @@ require_once '../utils/translations.php';
 require_once '../config/database.php';
 
 /**
+ * Handles the uploading process of an image. It also checks if the file provided is an actual image and returns a response as following:
+ * 0 : Unknown error
+ * 1 : File upload success
+ * 2 : File is not an image
+ * 3 : Not supported type
+ * 
+ * @param object $image
+ * @param integer $id
+ * 
+ * @return integer
+ */
+function handleImageUpload($image, $id)
+{
+    //TODO
+}
+
+function update($id, $title, $description, $price)
+{
+    $result = false;
+    if ($title && $description && $price) {
+        $stmt = $GLOBALS['conn']->prepare('UPDATE products SET title=?, description=?, price=? WHERE id = ?');
+        $result = $stmt->execute([$title, $description, $price, $id]);
+    }
+    return $result;
+}
+
+function insert($title, $description, $price)
+{
+    $result = false;
+    if ($title && $description && $price) {
+        $stmt = $GLOBALS['conn']->prepare('INSERT INTO products (title, description, price) VALUES (?, ?, ?)');
+        $result = $stmt->execute([$title, $description, $price]);
+    }
+    if ($result) {
+        return $GLOBALS['conn']->lastInsertId();
+    }
+    return -1;
+}
+
+/**
  * Function for querying from table 'products'. The parameter 'not' controls whether or not the column specified should be
  * present in the 'values' array
  * 
  * @param string|null $columnName
  * @param array $values
  * @param bool $not
+ * 
  * @return array
  */
 function fetch($columnName = null, $values = [], $not = false)
@@ -37,6 +78,7 @@ function fetch($columnName = null, $values = [], $not = false)
  * and its corresponding image
  *   
  * @param integer $value
+ * 
  * @return bool
  */
 function deleteProduct($value)

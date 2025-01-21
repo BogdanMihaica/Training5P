@@ -49,9 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
     <?php include('../components/admin-navbar.php') ?>
 
     <?php include('../components/background.php') ?>
-
-    <h1 class="title">Products Dashboard</h1>
-
+    <span class="dashboard-title">
+        <h1 class="title">Products Dashboard</h1>
+        <a href="product.php">
+            <div class="add-product">+</div>
+        </a>
+    </span>
     <p style="color:red"><?= $error_message ?></p>
 
     <div class="admin-products-container">

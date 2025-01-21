@@ -1,16 +1,20 @@
 <?php
 session_start();
 
-require_once('../config/credentials.php');
+
 require_once('../components/language.php');
 require_once('../utils/email_template.php');
 
+$data = require_once('../config/config.php');
+
+$config = $data['mail'];
 $response = 0;
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $to = $host_email;
+    $to = $config['admin_email'];
     $subject = 'Test Email';
-    $body = getEmailBody('Client', $client_email);
-    $headers = 'From: ' . $client_email;
+    $body = getEmailBody('Client', $config['client_email']);
+    $headers = 'From: ' . $config['client_email'];
 
     if (count($_SESSION['cart']) === 0) {
         $response = 2;

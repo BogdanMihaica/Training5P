@@ -5,21 +5,16 @@ require_once('../common/functions.php');
 session_start();
 
 $cartItems = [];
-
-if (isset($_SESSION['cart'])) {
-    $cartItems = $_SESSION['cart'];
-}
-
 $result = [];
-
-if (count($cartItems) > 0) {
-    $result = fetch('id', array_keys($cartItems));
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     removeFromCart($_GET['index']);
     header('Location: cart.php');
+} elseif (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
+    $cartItems = $_SESSION['cart'];
+    $result = fetch('id', array_keys($cartItems));
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

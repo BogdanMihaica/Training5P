@@ -1,14 +1,16 @@
 <?php
+session_start();
+
 require_once('../common/functions.php');
 require_once('../config/database.php');
 
-session_start();
+$login_data = $data['admin'];
 
 $error_message = '';
 if (isset($_SESSION['admin']) &&  $_SESSION['admin'] == true) {
     header('Location: .');
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
-    if ($_POST['username'] === $admin_username && password_verify($_POST['password'], $admin_password)) {
+    if ($_POST['username'] === $login_data['username'] && password_verify($_POST['password'], $login_data['password'])) {
         $_SESSION['admin'] = true;
         header('Location: products.php');
     } else {
