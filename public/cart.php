@@ -25,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
 
     <?php include('../components/language.php') ?>
 
+    <?php include('../components/admin-button.php') ?>
+
     <div class="big-circle top-right"></div>
     <div class="big-circle bottom-left"></div>
 
@@ -60,8 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
         <?php endforeach ?>
     </div>
     <div class="checkout-container">
-        <a class="checkout-button" href="./checkout.php"><?= translate("Checkout") ?></a>
+        <form action="./checkout.php" method="POST" class="checkout-form">
+            <h2>Please fill in your details to checkout</h2>
+            <label for="customer-name">Name:</label>
+            <input type="text" id="customer-name" name="customer_name" placeholder="Enter your name" required>
+
+            <label for="customer-email">Email:</label>
+            <input type="email" id="customer-email" name="customer_email" placeholder="Enter your email" required>
+
+            <button type="submit" class="checkout-button"><?= translate("Checkout") ?></button>
+        </form>
     </div>
+
 
 </body>
 

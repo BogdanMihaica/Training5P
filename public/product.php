@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['price'])) {
     if (isset($_POST['add'])) {
 
-        $response = insert($_POST['title'], $_POST['description'], intval($_POST['price']));
+        $response = insertProduct($_POST['title'], $_POST['description'], intval($_POST['price']));
 
         if ($response < 0) {
             $log_message = 'Could not insert data';
@@ -95,18 +95,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
                 <?= $log_message ?>
 
                 <label for="title">Title</label>
-                <input type="text" id="title" name="title" value="<?= $edit_mode ? sanitize($title) : '' ?>">
+                <input type="text" id="title" name="title" value="<?= $edit_mode ? sanitize($title) : '' ?>" required>
 
                 <label for="description">Description</label>
-                <textarea id="description" name="description"><?= $edit_mode ? sanitize($description) : '' ?></textarea>
+                <textarea id="description" name="description" required><?= $edit_mode ? sanitize($description) : '' ?></textarea>
 
                 <label for="price">Price</label>
-                <input type="number" id="price" name="price" value="<?= $edit_mode ? $price : '' ?>">
+                <input type="number" id="price" name="price" value="<?= $edit_mode ? $price : '' ?>" required>
 
                 <label for="image">Image</label>
                 <input type="file" id="image" name="image"><br><br>
 
-                <input type="hidden" id="mode" name="<?= $edit_mode ? 'edit' : 'add' ?>" value="<?= $edit_mode ? $product['id'] : -1 ?>">
+                <input type="hidden" id="mode" name="<?= $edit_mode ? 'edit' : 'add' ?>" value="<?= $edit_mode ? sanitize($product['id']) : -1 ?>">
 
                 <button type="submit"><?= $edit_mode ? 'Update' : 'Add' ?></button>
             </form>

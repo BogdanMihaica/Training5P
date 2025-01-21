@@ -56,7 +56,7 @@ $translations = [
         'ro' => 'Parola',
         'es' => 'Contraseña'
     ],
-    'Welcome back!' => [
+    'Welcome Back!' => [
         'ro' => 'Bine ai revenit!',
         'es' => '¡Bienvenido de nuevo!'
     ],

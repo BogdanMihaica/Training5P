@@ -5,20 +5,26 @@ session_start();
 require_once('../components/language.php');
 require_once('../utils/email_template.php');
 
-$data = require_once('../config/config.php');
-
 $config = $data['mail'];
 $response = 0;
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer_name']) && isset($_POST['customer_email'])) {
+
     $to = $config['admin_email'];
     $subject = 'Test Email';
-    $body = getEmailBody('Client', $config['client_email']);
-    $headers = 'From: ' . $config['client_email'];
+    $body = getEmailBody('Client', $_POST['customer_email']);
+    $headers = 'From: ' . $_POST['customer_email'];
 
     if (count($_SESSION['cart']) === 0) {
         $response = 2;
     } elseif (mail($to, $subject, $body, $headers)) {
+
+        $order_id = insertOrder($_POST['customer_name'], $_POST['customer_email']);
+
+        if ($order_id > 0) {
+            insertOrdersProducts($_SESSION['cart'], $order_id);
+        }
+
         $response = 1;
         $_SESSION['cart'] = [];
     }

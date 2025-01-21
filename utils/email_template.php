@@ -15,7 +15,7 @@ function getEmailBody($user, $email)
     }
 
     $productIds = array_keys($_SESSION['cart']);
-    $products = fetch('id', $productIds);
+    $products = fetch('products', 'id', $productIds);
 
     $emailBody = "<html><body>";
     $emailBody .= "<p><strong>{$user}</strong> with email <strong>{$email}</strong> has placed the following order:</p>";

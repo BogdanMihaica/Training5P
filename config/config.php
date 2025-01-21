@@ -14,6 +14,5 @@ return [
     ],
     'mail' => [
         'admin_email' => 'claudiumihaica12@gmail.com',
-        'client_email' => 'test@example.com'
     ]
 ];

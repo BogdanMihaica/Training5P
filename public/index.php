@@ -49,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
 
         <a href="cart.php" class="view-cart"><?= translate("View cart items") ?></a>
 
+        <?php include('../components/admin-button.php') ?>
+
         <h1 class="page-title"><?= translate("List of available products") ?></h1>
 
         <div class="products-container">
