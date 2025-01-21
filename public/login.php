@@ -37,11 +37,11 @@ if (isset($_SESSION['admin']) &&  $_SESSION['admin'] == true) {
             <form class="login-form" method="POST">
                 <div class="input-group">
                     <label for="username"><?= translate('Username') ?></label>
-                    <input type="text" id="username" name="username" placeholder="<?= translate('Enter your username') ?>" required>
+                    <input type="text" id="username" name="username" placeholder="<?= translate('Enter your username') ?>">
                 </div>
                 <div class="input-group">
                     <label for="password"><?= translate('Password') ?></label>
-                    <input type="password" id="password" name="password" placeholder="<?= translate('Enter your password') ?>" required>
+                    <input type="password" id="password" name="password" placeholder="<?= translate('Enter your password') ?>">
                 </div>
                 <button type="submit" class="login-button"><?= translate('Login') ?></button>
             </form>

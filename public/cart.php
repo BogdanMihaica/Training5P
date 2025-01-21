@@ -19,18 +19,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     isset($_POST['customer_name']) &&
     isset($_POST['customer_email'])
 ) {
-    if (!empty(trim($_POST['customer_name'])) && !empty(trim($_POST['customer_email']))) {
+    $name = trim($_POST['customer_name']);
+    $email = trim($_POST['customer_email']);
 
+    if (empty($name)) {
+        $error['name'] = 'You must specify your name';
+    }
+
+    if (empty($email)) {
+        $error['email'] = 'You must specify your email';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error['email'] = 'Invalid email format';
+    }
+
+    if (empty($error['name']) && empty($error['email'])) {
         $to = $config['admin_email'];
         $subject = 'Test Email';
-        $body = getEmailBody('Client', $_POST['customer_email']);
-        $headers = 'From: ' . $_POST['customer_email'];
+        $body = getEmailBody('Client', $email);
+        $headers = 'From: ' . $email;
 
         if (count($_SESSION['cart']) === 0) {
             $response = 2;
         } elseif (mail($to, $subject, $body, $headers)) {
-
-            $orderId = insertOrder($_POST['customer_name'], $_POST['customer_email']);
+            $orderId = insertOrder($name, $email);
 
             if ($orderId > 0) {
                 insertOrdersProducts($_SESSION['cart'], $orderId);
@@ -40,17 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
             $_SESSION['cart'] = [];
         } else {
             $response = 0;
-        }
-    } else {
-
-        if (empty(trim($_POST['customer_name']))) {
-            $error['name'] = 'You must specify your name';
-        }
-
-        if (empty(trim($_POST['customer_email']))) {
-            $error['email'] = 'You must specify your email';
-        } else if (!filter_var($_POST['customer_email'], FILTER_VALIDATE_EMAIL)) {
-            $error['email'] = 'Invalid email format';
         }
     }
 } elseif (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
