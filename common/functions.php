@@ -17,7 +17,8 @@ require_once '../config/database.php';
  */
 function handleImageUpload($image, $id)
 {
-    //TODO
+    //TODO : implement
+    return 0;
 }
 
 function update($id, $title, $description, $price)
@@ -44,27 +45,28 @@ function insert($title, $description, $price)
 }
 
 /**
- * Function for querying from table 'products'. The parameter 'not' controls whether or not the column specified should be
+ * Function for querying from a table. The parameter 'not' controls whether or not the column specified should be
  * present in the 'values' array
  * 
+ * @param string $table
  * @param string|null $columnName
  * @param array $values
  * @param bool $not
  * 
  * @return array
  */
-function fetch($columnName = null, $values = [], $not = false)
+function fetch($table = 'products', $columnName = null, $values = [], $not = false)
 {
     $result = [];
 
     if (is_null($columnName) && count($values) === 0) {
-        $stmt = $GLOBALS['conn']->query('SELECT * FROM products');
+        $stmt = $GLOBALS['conn']->query('SELECT * FROM ' . $table);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
         $placeholders = implode(',', array_fill(0, count($values), '?'));
         $isIn = $not ? 'NOT' : '';
 
-        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM products WHERE {$columnName} {$isIn} IN ({$placeholders})");
+        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM {$table} WHERE {$columnName} {$isIn} IN ({$placeholders})");
         $stmt->execute($values);
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

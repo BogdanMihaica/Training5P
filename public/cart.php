@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     header('Location: cart.php');
 } elseif (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
     $cartItems = $_SESSION['cart'];
-    $result = fetch('id', array_keys($cartItems));
+    $result = fetch('products', 'id', array_keys($cartItems));
 }
 
 ?>

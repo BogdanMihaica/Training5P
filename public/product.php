@@ -18,7 +18,7 @@ $log_message = '';
 $new_id = -1;
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 
-    $product = fetch('id', [intval($_GET['edit'])])[0];
+    $product = fetch('products', 'id', [intval($_GET['edit'])])[0];
 
     if ($product) {
         $edit_mode = true;
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         if (!$response) {
             $log_message = 'Could not update data';
 
-            $product = fetch('id', [$product_id])[0];
+            $product = fetch('products', 'id', [$product_id])[0];
             if ($product) {
                 $id = $product['id'];
                 $title = $product['title'];

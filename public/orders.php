@@ -16,6 +16,7 @@ if (!isset($_SESSION['admin'])) {
     <?php include('../components/admin-navbar.php') ?>
 
     <?php include('../components/background.php') ?>
+
 </body>
 
 </html>
