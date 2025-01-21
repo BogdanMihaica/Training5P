@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
                 <div class="product">
                     <div class="product-details">
                         <div class="product-image-container">
-                            <img class="product-image" src="<?= 'src/images/' . sanitize($row['id']) . '.jpg' ?>" alt="<?= sanitize($row['title']) ?>">
+                            <img class="product-image" src="<?= 'src/images/' . getImageForId(sanitize($row['id'])) ?>" alt="<?= sanitize($row['title']) ?>">
                         </div>
                         <p class="product-title">
                             <?= sanitize($row['title']) ?>

@@ -3,6 +3,18 @@
 require_once '../utils/translations.php';
 require_once '../config/database.php';
 
+function getImageForId($id)
+{
+    $dir = '../public/src/images';
+    $files = scandir($dir);
+    foreach ($files as $file) {
+        if (pathinfo($file, PATHINFO_FILENAME) == $id) {
+            return trim($file);
+        }
+    }
+    return '';
+}
+
 /**
  * Fetches all entries from table products in a many-to-many maneer with table orders
  * 
@@ -26,8 +38,7 @@ function fetchOrderJoin($id)
  * Handles the uploading process of an image. It also checks if the file provided is an actual image and returns a response as following:
  * 0 : Unknown error
  * 1 : File upload success
- * 2 : File is not an image
- * 3 : Not supported type
+ * 2 : Not supported type
  * 
  * @param array $image
  * @param integer $id
@@ -38,29 +49,41 @@ function handleImageUpload($image, $id)
 {
     $target_dir = "../public/src/images/";
     $file_extension = pathinfo($image['name'], PATHINFO_EXTENSION);
-    $new_filename = $target_dir . $id . $file_extension;
+    $new_file_name = $target_dir . $id . '.' . $file_extension;
     $accepted_file_types = ['png', 'jpg', 'jpeg', 'gif'];
+
+    # Verify if the file is an image
+
+    $check = getimagesize($image["tmp_name"]);
+
+    if (!$check) {
+        return 3;
+    }
 
     # Verify if the file is an image of valid type
 
     if (!in_array($file_extension, $accepted_file_types)) {
-        return 3;
+        return 2;
     }
 
     # Verify if there is a file with the same name (not extension)
 
     $files_in_target_dir = scandir($target_dir);
-    $exists = false;
 
     foreach ($files_in_target_dir as $file) {
 
         $file_name = pathinfo($file, PATHINFO_FILENAME);
 
         if ($file_name == $id) {
-            $exists = true;
+            unlink($target_dir . $file);
             break;
         }
     }
+
+    if (move_uploaded_file($image["tmp_name"], $new_file_name)) {
+        return 1;
+    }
+
     return 0;
 }
 

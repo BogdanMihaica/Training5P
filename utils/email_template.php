@@ -38,7 +38,7 @@ function getEmailBody($user, $email)
         $productId = $product['id'];
         $quantity = $_SESSION['cart'][$productId];
         $totalPrice = $product['price'] * $quantity;
-        $imageUrl = 'http://localhost/php/training/Training5P/public/src/images/' . $product['id'] . '.jpg';
+        $imageUrl = 'http://localhost/php/training/Training5P/public/src/images/' . getImageForId($product['id']);
         $grandTotal += $totalPrice;
 
         $emailBody .= "<tr>";

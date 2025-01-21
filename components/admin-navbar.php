@@ -1,5 +1,4 @@
 <?php
-session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['logout']) && intval($_GET['logout']) === 1) {
     unset($_SESSION['admin']);
     header('Location: .');

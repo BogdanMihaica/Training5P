@@ -78,7 +78,7 @@ if (isset($_GET['id']) && intval($_GET['id']) > 0) {
                                 <a href="<?= 'product.php?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
                             </td>
                             <td class="produt-image-entry">
-                                <img src="<?= './src/images/' . sanitize($product['id']) . '.jpg' ?>" alt="product image">
+                                <img src="<?= './src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="product image">
                             </td>
                             <td><?= sanitize($product['description']) ?></td>
                             <td><?= sanitize($product['price']) ?></td>

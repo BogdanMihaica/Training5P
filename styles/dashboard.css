@@ -102,3 +102,6 @@ a{
 .add-product:hover{
     background-color: #777;
 }
+.current-image{
+    width:50%;
+}

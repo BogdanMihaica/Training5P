@@ -16,6 +16,7 @@ $description = '';
 $price = '';
 $log_message = '';
 $new_id = -1;
+$file_log_message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 
     $product = fetch('products', 'id', [intval($_GET['edit'])])[0];
@@ -69,11 +70,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         }
         $new_id = $id;
     }
-    if ($_FILES["image"]) {
-        //handleImageUpload($_FILES['image'], $new_id);
+    if ($_FILES['image']) {
+        $file_upload_response = handleImageUpload($_FILES['image'], $new_id);
+
+        if ($file_upload_response == 1) {
+            $file_log_message = 'Image uploaded succesfully!';
+        } elseif ($file_upload_response == 2) {
+            $file_log_message = 'Not supported type. Required file type : jpg / jpeg / png / gif';
+        } elseif ($file_upload_response == 3) {
+            $file_log_message = 'Not an image';
+        } else {
+            $file_log_message = 'Unknown error while uploading image';
+        }
     }
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -89,10 +99,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 
     <div class="center-container">
         <div class="form-container">
-            <h1><?= $edit_mode ? 'Edit product' : 'Add new product' ?></h1><br><br>
-            <form method="post">
 
-                <?= $log_message ?>
+            <h1><?= $edit_mode ? 'Edit product' : 'Add new product' ?></h1>
+
+            <br><br>
+
+            <?php if ($edit_mode) : ?>
+                <img class="current-image" src="<?= './src/images/' . getImageForId($id) ?>" alt="product image">
+            <?php endif ?>
+
+            <br><br>
+
+            <?= $log_message . ' ' . $file_log_message ?>
+
+            <br><br>
+
+            <form method="post" enctype="multipart/form-data">
 
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" value="<?= $edit_mode ? sanitize($title) : '' ?>" required>
