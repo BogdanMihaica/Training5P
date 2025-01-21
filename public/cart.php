@@ -63,12 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     </div>
     <div class="checkout-container">
         <form action="./checkout.php" method="POST" class="checkout-form">
-            <h2>Please fill in your details to checkout</h2>
-            <label for="customer-name">Name:</label>
-            <input type="text" id="customer-name" name="customer_name" placeholder="Enter your name" required>
+            <h2><?= translate("Please fill in your details to checkout.") ?></h2>
 
-            <label for="customer-email">Email:</label>
-            <input type="email" id="customer-email" name="customer_email" placeholder="Enter your email" required>
+            <label for="customer-name"><?= translate('Name') . ':' ?></label>
+            <input type="text" id="customer-name" name="customer_name" placeholder="<?= translate('Enter your name') ?>">
+            <p class="error"><?= $error['name'] ?></p>
+
+            <label for="customer-email"><?= translate('Email') . ':' ?></label>
+            <input type="email" id="customer-email" name="customer_email" placeholder="<?= translate('Enter your email') ?>">
+            <p class="error"><?= $error['email'] ?></p>
 
             <button type="submit" class="checkout-button"><?= translate("Checkout") ?></button>
         </form>

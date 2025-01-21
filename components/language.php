@@ -2,12 +2,12 @@
 require_once('../common/functions.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['language'])) {
-    $selected_language = sanitize($_GET['language']);
+    $selectedLanguage = sanitize($_GET['language']);
 
-    if ($selected_language === "en") {
+    if ($selectedLanguage === "en") {
         unset($_SESSION['language']);
     } else {
-        $_SESSION['language'] = $selected_language;
+        $_SESSION['language'] = $selectedLanguage;
     }
 
     header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?'));
@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['language'])) {
 }
 ?>
 <div class="language-block" style="position: fixed; right: 0; z-index: 10;">
-    <a href="?language=es">ES</a>
     <a href="?language=en">EN</a>
     <a href="?language=ro">RO</a>
 </div>

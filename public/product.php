@@ -8,79 +8,113 @@ if (!isset($_SESSION['admin'])) {
     exit();
 }
 
-$edit_mode = false;
+$editMode = false;
 $product = null;
 $id = -1;
 $title = '';
 $description = '';
-$price = '';
-$log_message = '';
-$new_id = -1;
-$file_log_message = '';
+$price = 0;
+$logMessage = '';
+$newId = -1;
+$fileLogMessage = '';
+$errors = ['title' => '', 'description' => '', 'price' => ''];
+
+// If we make a GET request to the server, try to fetch the product with that id. If it doesn't exist, set the product to null
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 
-    $product = fetch('products', 'id', [intval($_GET['edit'])])[0];
+    $query = fetch('products', 'id', [$_GET['edit']]);
+    $editMode = true;
+
+    if (count($query) !== 0) {
+        $product = $query[0];
+    }
 
     if ($product) {
-        $edit_mode = true;
         $id = $product['id'];
         $title = $product['title'];
         $description = $product['description'];
         $price = $product['price'];
     }
-} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['price'])) {
-    if (isset($_POST['add'])) {
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $response = insertProduct($_POST['title'], $_POST['description'], intval($_POST['price']));
+    $title = $_POST['title'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $price = $_POST['price'] ?? '';
+
+    if (empty(trim($title))) {
+        $errors['title'] = 'Title cannot be empty.';
+    }
+
+    if (empty(trim($description))) {
+        $errors['description'] = 'Description cannot be null.';
+    }
+
+    if (empty($price) || !is_numeric($price) || floatval($price) <= 0) {
+        $errors['price'] = 'Price must be a not null positive number';
+    }
+
+    $validationError = !(empty($errors['title']) && empty($errors['description']) && empty($errors['price']));
+
+    if (isset($_POST['add'])) {
+        $response = -1;
+
+        if (!$validationError) {
+            $response = insertProduct($title, $description, $price);
+        }
 
         if ($response < 0) {
-            $log_message = 'Could not insert data';
+            $logMessage = 'Could not insert data';
         } else {
-            $log_message = 'Succesfully added data!';
-
-            $new_id = $response;
+            $logMessage = 'Successfully added data!';
+            $newId = $response;
         }
-    } else if (isset($_POST['edit'])) {
+    } elseif (isset($_POST['edit'])) {
+        $editMode = true;
+        $id = $_POST['edit'];
 
-        $edit_mode = true;
+        $query = fetch('products', 'id', [$id]);
 
-        $url = $_SERVER['REQUEST_URI'];
-        $url_components = parse_url($url);
-        parse_str($url_components['query'], $params);
-        $product_id = intval($params['edit']);
+        if (count($query) !== 0) {
+            $product = $query[0];
+        }
 
-        $response = update($product_id, $_POST['title'], $_POST['description'], intval($_POST['price']));
+        if (!$product) {
+            $logMessage = 'Product not found for editing.';
+        } else {
+            $response = -1;
+            if (!$validationError) {
+                $response = update($id, $title, $description, $price);
+            }
 
-        if (!$response) {
-            $log_message = 'Could not update data';
+            if (!$response) {
+                $logMessage = 'Could not update data';
 
-            $product = fetch('products', 'id', [$product_id])[0];
-            if ($product) {
+                // Restore product details in case of failure
                 $id = $product['id'];
                 $title = $product['title'];
                 $description = $product['description'];
                 $price = $product['price'];
+            } else {
+                $logMessage = 'Successfully updated data!';
+                $newId = $id;
             }
-        } else {
-            $log_message = 'Succesfully updated data!';
-            $id = $product_id;
-            $title = $_POST['title'];
-            $description = $_POST['description'];
-            $price = $_POST['price'];
         }
-        $new_id = $id;
     }
-    if ($_FILES['image']) {
-        $file_upload_response = handleImageUpload($_FILES['image'], $new_id);
 
-        if ($file_upload_response == 1) {
-            $file_log_message = 'Image uploaded succesfully!';
-        } elseif ($file_upload_response == 2) {
-            $file_log_message = 'Not supported type. Required file type : jpg / jpeg / png / gif';
-        } elseif ($file_upload_response == 3) {
-            $file_log_message = 'Not an image';
+
+    // Upload image
+    if ($_FILES['image'] && $_FILES['image']['size'] !== 0 && $newId > 0) {
+
+        $fileUploadResponse = handleImageUpload($_FILES['image'], $newId);
+
+        if ($fileUploadResponse == 1) {
+            $fileLogMessage = 'Image uploaded succesfully!';
+        } elseif ($fileUploadResponse == 2) {
+            $fileLogMessage = 'Not supported type. Required file type : jpg / jpeg / png / gif';
+        } elseif ($fileUploadResponse == 3) {
+            $fileLogMessage = 'Not an image';
         } else {
-            $file_log_message = 'Unknown error while uploading image';
+            $fileLogMessage = 'Unknown error while uploading image';
         }
     }
 }
@@ -97,41 +131,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 
     <?php include('../components/background.php') ?>
 
+    <?php include('../components/language.php') ?>
+
     <div class="center-container">
         <div class="form-container">
+            <?php if ($editMode && !$product) : ?>
+                <h1><?= translate("No such product") ?></h1>
+            <?php else : ?>
+                <h1><?= $editMode ? translate('Edit product') : translate('Add new product') ?></h1>
 
-            <h1><?= $edit_mode ? 'Edit product' : 'Add new product' ?></h1>
+                <?php if ($editMode) : ?>
+                    <img class="current-image" src="<?= './src/images/' . getImageForId($id) ?>" alt="product image">
+                <?php endif ?>
 
-            <br><br>
+                <br><br>
 
-            <?php if ($edit_mode) : ?>
-                <img class="current-image" src="<?= './src/images/' . getImageForId($id) ?>" alt="product image">
+                <?= translate($logMessage) . ' ' . translate($fileLogMessage) ?>
+
+                <br><br>
+
+                <form method="post" enctype="multipart/form-data">
+
+                    <label for="title"><?= translate('Title') ?></label>
+                    <input type="text" id="title" name="title" value="<?= $editMode ? sanitize($title) : '' ?>">
+                    <p class="error"><?= translate($errors['title']) ?></p>
+
+                    <label for="description"><?= translate('Description') ?></label>
+                    <textarea id="description" name="description"><?= $editMode ? sanitize($description) : '' ?></textarea>
+                    <p class="error"><?= translate($errors['description']) ?></p>
+
+                    <label for="price"><?= translate('Price') ?></label>
+                    <input type="number" id="price" name="price" value="<?= $editMode ? $price : '' ?>">
+                    <p class="error"><?= translate($errors['price']) ?></p>
+
+                    <label for="image"><?= translate('Image') ?></label>
+                    <input type="file" id="image" name="image"><br><br>
+
+                    <input type="hidden" id="mode" name="<?= $editMode ? 'edit' : 'add' ?>" value="<?= $editMode ? $product['id'] : -1 ?>">
+
+                    <button type="submit"><?= $editMode ? translate('Update') : translate('Add') ?></button>
+                </form>
             <?php endif ?>
-
-            <br><br>
-
-            <?= $log_message . ' ' . $file_log_message ?>
-
-            <br><br>
-
-            <form method="post" enctype="multipart/form-data">
-
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" value="<?= $edit_mode ? sanitize($title) : '' ?>" required>
-
-                <label for="description">Description</label>
-                <textarea id="description" name="description" required><?= $edit_mode ? sanitize($description) : '' ?></textarea>
-
-                <label for="price">Price</label>
-                <input type="number" id="price" name="price" value="<?= $edit_mode ? $price : '' ?>" required>
-
-                <label for="image">Image</label>
-                <input type="file" id="image" name="image"><br><br>
-
-                <input type="hidden" id="mode" name="<?= $edit_mode ? 'edit' : 'add' ?>" value="<?= $edit_mode ? sanitize($product['id']) : -1 ?>">
-
-                <button type="submit"><?= $edit_mode ? 'Update' : 'Add' ?></button>
-            </form>
         </div>
     </div>
 

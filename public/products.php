@@ -8,34 +8,34 @@ if (!isset($_SESSION['admin'])) {
     exit();
 }
 
-$error_message = '';
-$prod_per_page = 12;
-$current_page = isset($_GET['page']) ? intval($_GET['page']) : 0;
+$errorMessage = '';
+$prodPerPage = 12;
+$currentPage = isset($_GET['page']) ? intval($_GET['page']) : 0;
 $products = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "GET" && !isset($_GET['id'])) {
     $products = fetch();
 } else if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
     if (!deleteProduct($_GET['id'])) {
-        $error_message = 'Unable to delete product with id ' . $_GET['id'];
+        $errorMessage = translate('Unable to delete product with id ') . $_GET['id'];
     } else {
         $products = fetch();
-        $total_products = count($products);
+        $totalProducts = count($products);
 
-        $total_pages = ceil($total_products / $prod_per_page);
+        $totalPages = ceil($totalProducts / $prodPerPage);
 
-        if ($current_page >= $total_pages) {
-            $current_page = max(0, $total_pages - 1);
+        if ($currentPage >= $totalPages) {
+            $currentPage = max(0, $totalPages - 1);
         }
 
-        header('Location: products.php?page=' . $current_page);
+        header('Location: products.php?page=' . $currentPage);
         exit();
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
-    $current_page = intval($_GET['page']);
-    if ($current_page * $prod_per_page >= count($products)) {
-        header('Location: products.php?page=' . ($current_page - 1));
+    $currentPage = intval($_GET['page']);
+    if ($currentPage * $prodPerPage >= count($products)) {
+        header('Location: products.php?page=' . ($currentPage - 1));
     }
 }
 ?>
@@ -49,29 +49,33 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
     <?php include('../components/admin-navbar.php') ?>
 
     <?php include('../components/background.php') ?>
+
+    <?php include('../components/language.php') ?>
+
     <span class="dashboard-title">
-        <h1 class="title">Products Dashboard</h1>
+        <h1 class="title"> <?= translate('Products Dashboard') ?></h1>
         <a href="product.php">
             <div class="add-product">+</div>
         </a>
     </span>
-    <p style="color:red"><?= $error_message ?></p>
+
+    <p style="color:red"><?= $errorMessage ?></p>
 
     <div class="admin-products-container">
-        <a href="<?= 'products.php?page=' . ($current_page > 0 ? ($current_page - 1) : 0) ?>">
+        <a href="<?= 'products.php?page=' . ($currentPage > 0 ? ($currentPage - 1) : 0) ?>">
             <div class="arrow">&#8678;</div>
         </a>
         <table class="admin-products-table">
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Delete</th>
+                <th><?= translate('Id') ?></th>
+                <th><?= translate('Title') ?></th>
+                <th><?= translate('Image') ?></th>
+                <th><?= translate('Description') ?></th>
+                <th><?= translate('Price') ?></th>
+                <th><?= translate('Delete') ?></th>
             </tr>
 
-            <?php for ($i = $current_page * $prod_per_page; $i < ($current_page + 1) * $prod_per_page && $i < count($products); $i++):
+            <?php for ($i = $currentPage * $prodPerPage; $i < ($currentPage + 1) * $prodPerPage && $i < count($products); $i++):
                 $product = $products[$i];
             ?>
                 <tr>
@@ -80,20 +84,20 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
                         <a href="<?= 'product.php?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
                     </td>
                     <td class="produt-image-entry">
-                        <img src="<?= './src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="product image">
+                        <img src="<?= './src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="<?= translate('Product Image') ?>">
                     </td>
                     <td><?= sanitize($product['description']) ?></td>
                     <td><?= sanitize($product['price']) ?></td>
                     <td>
-                        <a href="<?= 'products.php?page=' . $current_page . '&id=' . sanitize($product['id']) ?>">
-                            <img class="delete-button" src="../misc/png/delete.png" alt="delete button">
+                        <a href="<?= 'products.php?page=' . $currentPage . '&id=' . sanitize($product['id']) ?>">
+                            <img class="delete-button" src="../misc/png/delete.png" alt="<?= translate('Delete Button') ?>">
                         </a>
                     </td>
                 </tr>
             <?php endfor ?>
 
         </table>
-        <a href="<?= 'products.php?page=' . ($current_page + 1) ?>">
+        <a href="<?= 'products.php?page=' . ($currentPage + 1) ?>">
             <div class="arrow">&#8680;</div>
         </a>
     </div>

@@ -7,22 +7,24 @@ function getImageForId($id)
 {
     $dir = '../public/src/images';
     $files = scandir($dir);
+
     foreach ($files as $file) {
         if (pathinfo($file, PATHINFO_FILENAME) == $id) {
             return trim($file);
         }
     }
+
     return '';
 }
 
 /**
  * Fetches all entries from table products in a many-to-many maneer with table orders
  * 
- * @param integer $id
+ * @param integer $id Order id
  * 
  * @return array
  */
-function fetchOrderJoin($id)
+function fetchOrderProducts($id)
 {
     $stmt = $GLOBALS['conn']->prepare('SELECT p.id as id, p.title as title, p.description as description, p.price as price, op.quantity as quantity 
                                         FROM products p 
@@ -47,10 +49,10 @@ function fetchOrderJoin($id)
  */
 function handleImageUpload($image, $id)
 {
-    $target_dir = "../public/src/images/";
-    $file_extension = pathinfo($image['name'], PATHINFO_EXTENSION);
-    $new_file_name = $target_dir . $id . '.' . $file_extension;
-    $accepted_file_types = ['png', 'jpg', 'jpeg', 'gif'];
+    $targetDir = "../public/src/images/";
+    $fileExtension = pathinfo($image['name'], PATHINFO_EXTENSION);
+    $newFileName = $targetDir . $id . '.' . $fileExtension;
+    $acceptedFileTypes = ['png', 'jpg', 'jpeg', 'gif'];
 
     # Verify if the file is an image
 
@@ -62,25 +64,25 @@ function handleImageUpload($image, $id)
 
     # Verify if the file is an image of valid type
 
-    if (!in_array($file_extension, $accepted_file_types)) {
+    if (!in_array($fileExtension, $acceptedFileTypes)) {
         return 2;
     }
 
     # Verify if there is a file with the same name (not extension)
 
-    $files_in_target_dir = scandir($target_dir);
+    $filesInTargetDir = scandir($targetDir);
 
-    foreach ($files_in_target_dir as $file) {
+    foreach ($filesInTargetDir as $file) {
 
-        $file_name = pathinfo($file, PATHINFO_FILENAME);
+        $fileName = pathinfo($file, PATHINFO_FILENAME);
 
-        if ($file_name == $id) {
-            unlink($target_dir . $file);
+        if ($fileName == $id) {
+            unlink($targetDir . $file);
             break;
         }
     }
 
-    if (move_uploaded_file($image["tmp_name"], $new_file_name)) {
+    if (move_uploaded_file($image["tmp_name"], $newFileName)) {
         return 1;
     }
 
@@ -91,10 +93,8 @@ function update($id, $title, $description, $price)
 {
     $result = false;
 
-    if ($title && $description && $price) {
-        $stmt = $GLOBALS['conn']->prepare('UPDATE products SET title=?, description=?, price=? WHERE id = ?');
-        $result = $stmt->execute([$title, $description, $price, $id]);
-    }
+    $stmt = $GLOBALS['conn']->prepare('UPDATE products SET title=?, description=?, price=? WHERE id = ?');
+    $result = $stmt->execute([$title, $description, $price, $id]);
 
     return $result;
 }
@@ -103,10 +103,8 @@ function insertProduct($title, $description, $price)
 {
     $result = false;
 
-    if ($title && $description && $price) {
-        $stmt = $GLOBALS['conn']->prepare('INSERT INTO products (title, description, price) VALUES (?, ?, ?)');
-        $result = $stmt->execute([$title, $description, $price]);
-    }
+    $stmt = $GLOBALS['conn']->prepare('INSERT INTO products (title, description, price) VALUES (?, ?, ?)');
+    $result = $stmt->execute([$title, $description, $price]);
 
     if ($result) {
         return $GLOBALS['conn']->lastInsertId();
@@ -115,13 +113,13 @@ function insertProduct($title, $description, $price)
     return -1;
 }
 
-function insertOrder($customer_name, $customer_email)
+function insertOrder($customerName, $customerEmail)
 {
     $result = false;
 
-    if ($customer_name && $customer_email) {
+    if ($customerName && $customerEmail) {
         $stmt = $GLOBALS['conn']->prepare('INSERT INTO orders (customer_name, customer_email) VALUES (?, ?)');
-        $result = $stmt->execute([$customer_name, $customer_email]);
+        $result = $stmt->execute([$customerName, $customerEmail]);
     }
 
     if ($result) {
@@ -186,9 +184,9 @@ function deleteProduct($value)
     if (!$result) {
         die('Failed to delete item');
     } else {
-        $file_path = 'src/images/' . $value . '.jpg';
-        if (file_exists($file_path)) {
-            unlink($file_path);
+        $filePath = 'src/images/' . $value . '.jpg';
+        if (file_exists($filePath)) {
+            unlink($filePath);
         }
     }
 

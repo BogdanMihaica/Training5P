@@ -8,7 +8,11 @@ require_once('../utils/email_template.php');
 $config = $data['mail'];
 $response = 0;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer_name']) && isset($_POST['customer_email'])) {
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['customer_name']) &&
+    isset($_POST['customer_email'])
+) {
 
     $to = $config['admin_email'];
     $subject = 'Test Email';
@@ -19,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer_name']) && i
         $response = 2;
     } elseif (mail($to, $subject, $body, $headers)) {
 
-        $order_id = insertOrder($_POST['customer_name'], $_POST['customer_email']);
+        $orderId = insertOrder($_POST['customer_name'], $_POST['customer_email']);
 
-        if ($order_id > 0) {
-            insertOrdersProducts($_SESSION['cart'], $order_id);
+        if ($orderId > 0) {
+            insertOrdersProducts($_SESSION['cart'], $orderId);
         }
 
         $response = 1;
@@ -38,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer_name']) && i
 
 <body>
     <?php include('../components/background.php') ?>
+
+    <?php include('../components/language.php') ?>
 
     <div class="checkout-page-container">
         <div class="response">

@@ -5,9 +5,10 @@ require_once('../common/functions.php');
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
-    exit();
 }
+
 $orders = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $orders = fetch('orders');
 }
@@ -22,15 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <?php include('../components/admin-navbar.php') ?>
 
     <?php include('../components/background.php') ?>
+
+    <?php include('../components/language.php') ?>
+
     <div class="orders-container">
-        <h1 class="title">Orders Dashboard</h1>
+        <h1 class="title"><?= translate('Orders Dashboard') ?></h1>
         <table class="admin-products-table orders-table">
             <tr>
-                <th>Id</th>
-                <th>Date created</th>
-                <th>Customer Name</th>
-                <th>Customer email</th>
-                <th>Products</th>
+                <th><?= translate('Id') ?></th>
+                <th><?= translate('Date created') ?></th>
+                <th><?= translate('Customer name') ?></th>
+                <th><?= translate('Customer email') ?></th>
+                <th><?= translate('Products') ?></th>
             </tr>
 
             <?php foreach ($orders as $order): ?>
@@ -39,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <td><?= sanitize($order['creation_date']) ?></td>
                     <td><?= sanitize($order['customer_name']) ?></td>
                     <td><?= sanitize($order['customer_email']) ?></td>
-                    <td><a href="<?= 'order.php?id=' . $order['id'] ?>">See full order</a></td>
+                    <td><a href="<?= 'order.php?id=' . $order['id'] ?>"><?= translate('See full order') ?></a></td>
                 </tr>
             <?php endforeach ?>
 

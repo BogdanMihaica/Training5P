@@ -5,28 +5,28 @@ session_start();
 
 if (!isset($_SESSION['admin'])) {
     header('Location: login.php');
-    exit();
 }
 
 $order = null;
 $products = [];
 $grand_total = 0;
 $error_message = '';
+
 if (isset($_GET['id']) && intval($_GET['id']) > 0) {
     $result = fetch('orders', 'id', [intval($_GET['id'])]);
 
     if (count($result) > 0) {
         $order = $result[0];
-        $products = fetchOrderJoin($_GET['id']);
+        $products = fetchOrderProducts($_GET['id']);
 
         foreach ($products as $product) {
-            $grand_total += intval($product['quantity']) * intval($product['price']);
+            $grand_total += intval($product['quantity']) * $product['price'];
         }
     } else {
-        $error_message = 'There is no such order with id #' . $_GET['id'];
+        $error_message = translate('There is no such order with id #') . $_GET['id'];
     }
 } else {
-    $error_message = 'This page doesn\'t exist';
+    $error_message = translate('This page doesn\'t exist');
 }
 
 
@@ -42,32 +42,34 @@ if (isset($_GET['id']) && intval($_GET['id']) > 0) {
 
     <?php include('../components/background.php') ?>
 
+    <?php include('../components/language.php') ?>
+
     <div class="order-container">
         <?php if ($order) : ?>
             <h1 class="order-title">
-                <?= 'Order #' . sanitize($order['id']) ?>
+                <?= translate("Order") . ' #' . sanitize($order['id']) ?>
             </h1>
             <div class="separator"></div>
             <span>
-                <p class="customer-name"><?= 'Name: ' . sanitize($order['customer_name']) ?></p>
+                <p class="customer-name"><?= translate("Name") . ': ' . sanitize($order['customer_name']) ?></p>
             </span>
             <span>
-                <p class="customer-email"><?= 'Email: ' . sanitize($order['customer_email']) ?></p>
+                <p class="customer-email"><?= translate("Email") . ': ' . sanitize($order['customer_email']) ?></p>
             </span>
             <span>
-                <p class="date"><?= 'Date created: ' . sanitize($order['creation_date']) ?></p>
+                <p class="date"><?= translate("Date created") . ': ' . sanitize($order['creation_date']) ?></p>
             </span>
-            <p>Products:</p>
+            <p><?= translate('Products') ?></p>
             <div class="ordered-products-container">
                 <table class="admin-products-table">
                     <tr>
-                        <th>Id</th>
-                        <th>Title</th>
-                        <th>Image</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
+                        <th><?= translate('Id') ?></th>
+                        <th><?= translate('Title') ?></th>
+                        <th><?= translate('Image') ?></th>
+                        <th><?= translate('Description') ?></th>
+                        <th><?= translate('Price') ?></th>
+                        <th><?= translate('Quantity') ?></th>
+                        <th><?= translate('Total') ?></th>
                     </tr>
 
                     <?php foreach ($products as $product): ?>
@@ -92,7 +94,7 @@ if (isset($_GET['id']) && intval($_GET['id']) > 0) {
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><strong>Grand total:</strong></td>
+                        <td><strong><?= translate('Grand total') ?></strong></td>
                         <td><?= $grand_total ?></td>
                     </tr>
             </div>
