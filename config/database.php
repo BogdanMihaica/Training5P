@@ -1,5 +1,4 @@
 <?php
-require_once('credentials.php');
 
 $data = require_once('config.php');
 $db_config = $data['database'];

@@ -34,7 +34,7 @@ if (isset($_GET['id']) && intval($_GET['id']) > 0) {
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../utils/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body>
 

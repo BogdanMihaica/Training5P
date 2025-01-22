@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../utils/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body>
 
@@ -151,18 +151,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
                 <br><br>
 
                 <form method="post" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label for="title"><?= translate('Title') ?></label>
+                        <input type="text" id="title" name="title" value="<?= $editMode ? sanitize($title) : '' ?>">
+                        <p class="error"><?= translate($errors['title']) ?></p>
+                    </div>
 
-                    <label for="title"><?= translate('Title') ?></label>
-                    <input type="text" id="title" name="title" value="<?= $editMode ? sanitize($title) : '' ?>">
-                    <p class="error"><?= translate($errors['title']) ?></p>
+                    <div class="input-group">
+                        <label for="description"><?= translate('Description') ?></label>
+                        <textarea id="description" name="description"><?= $editMode ? sanitize($description) : '' ?></textarea>
+                        <p class="error"><?= translate($errors['description']) ?></p>
+                    </div>
 
-                    <label for="description"><?= translate('Description') ?></label>
-                    <textarea id="description" name="description"><?= $editMode ? sanitize($description) : '' ?></textarea>
-                    <p class="error"><?= translate($errors['description']) ?></p>
+                    <div class="input-group">
+                        <label for="price"><?= translate('Price') ?></label>
+                        <input type="number" id="price" name="price" value="<?= $editMode ? $price : '' ?>">
+                        <p class="error"><?= translate($errors['price']) ?></p>
+                    </div>
 
-                    <label for="price"><?= translate('Price') ?></label>
-                    <input type="number" id="price" name="price" value="<?= $editMode ? $price : '' ?>">
-                    <p class="error"><?= translate($errors['price']) ?></p>
 
                     <label for="image"><?= translate('Image') ?></label>
                     <input type="file" id="image" name="image"><br><br>

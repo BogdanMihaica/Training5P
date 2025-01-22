@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../utils/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body>
 
