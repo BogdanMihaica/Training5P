@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../components/header.php') ?>
+<?php include basePath('views/partials/header.php') ?>
 
 <body>
-    <?php include('../components/background.php') ?>
+    <?php include basePath('views/partials/background.php') ?>
 
-    <?php include('../components/language.php') ?>
+    <?php include basePath('views/partials/language.php') ?>
 
     <div class="login-container">
         <div class="login-box">
             <h1 class="login-title"><?= translate('Welcome Back!') ?></h1>
 
-            <p class="error"><?= $errorMessage ?></p>
+            <p class="error"><?= translate($errorMessage) ?></p>
 
             <form class="login-form" method="POST">
 

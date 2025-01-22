@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../components/header.php') ?>
+<?php include basePath('views/partials/header.php') ?>
 
 <body>
 
-    <?php include('../components/admin-navbar.php') ?>
+    <?php include basePath('views/partials/admin-navbar.php') ?>
 
-    <?php include('../components/background.php') ?>
+    <?php include basePath('views/partials/background.php') ?>
 
-    <?php include('../components/language.php') ?>
+    <?php include basePath('views/partials/language.php') ?>
 
     <div class="center-container">
         <div class="form-container">

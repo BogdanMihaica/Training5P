@@ -1,19 +1,19 @@
 <?php
-require_once('../config/database.php');
-require_once('../common/functions.php');
-require_once('../utils/email_template.php');
+require_once basePath('utils/email_template.php');
 
 session_start();
+
+require basePath('config/config.php');
 
 $cartItems = $_SESSION['cart'];
 $result = [];
 $error = ['name' => '', 'email' => ''];
-$config = $data['mail'];
+$mailConfig = $config['mail'];
 $response = -1;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     removeFromCart($_GET['index']);
-    header('Location: cart.php');
+    redirect('/cart');
 } elseif (
     $_SERVER['REQUEST_METHOD'] === 'POST' &&
     isset($_POST['customer_name']) &&
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     }
 
     if (empty($error['name']) && empty($error['email'])) {
-        $to = $config['admin_email'];
+        $to = $mailConfig['admin_email'];
         $subject = 'Test Email';
         $name = sanitize($_POST['customer_name']);
         $body = getEmailBody($name, $email);
@@ -59,4 +59,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
 if (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
     $result = fetch('products', 'id', array_keys($cartItems));
 }
-require('views/cart.view.php');
+require basePath('views/cart.view.php');

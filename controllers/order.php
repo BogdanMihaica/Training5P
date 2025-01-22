@@ -1,10 +1,8 @@
 <?php
-require_once('../common/functions.php');
-
 session_start();
 
 if (!isset($_SESSION['admin'])) {
-    header('Location: login.php');
+    redirect('/login');
 }
 
 $order = null;
@@ -29,4 +27,4 @@ if (isset($_GET['id']) && intval($_GET['id']) > 0) {
     $error_message = translate('This page doesn\'t exist');
 }
 
-require('views/order.view.php');
+require basePath('views/order.view.php');

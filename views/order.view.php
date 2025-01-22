@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../components/header.php') ?>
+<?php include basePath('views/partials/header.php') ?>
 
 <body>
 
-    <?php include('../components/admin-navbar.php') ?>
+    <?php include basePath('views/partials/admin-navbar.php') ?>
 
-    <?php include('../components/background.php') ?>
+    <?php include basePath('views/partials/background.php') ?>
 
-    <?php include('../components/language.php') ?>
+    <?php include basePath('views/partials/language.php') ?>
 
     <div class="order-container">
         <?php if ($order) : ?>
@@ -44,10 +44,10 @@
                         <tr>
                             <td><?= sanitize($product['id']) ?></td>
                             <td>
-                                <a href="<?= 'product.php?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
+                                <a href="<?= '/product?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
                             </td>
-                            <td class="produt-image-entry">
-                                <img src="<?= './src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="product image">
+                            <td class="product-image-entry">
+                                <img src="<?= '../public/src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="product image">
                             </td>
                             <td><?= sanitize($product['description']) ?></td>
                             <td><?= sanitize($product['price']) ?></td>

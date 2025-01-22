@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-require_once('../common/functions.php');
-
 if (!isset($_SESSION['admin'])) {
-    header('Location: login.php');
-    exit();
+    redirect('/login');
 }
 
 $editMode = false;
@@ -119,4 +116,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
     }
 }
 
-require('views/product.view.php');
+require basePath('views/product.view.php');

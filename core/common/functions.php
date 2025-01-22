@@ -1,11 +1,10 @@
 <?php
 
-require_once '../utils/translations.php';
-require_once '../config/database.php';
+require_once basePath('utils/translations.php');
 
 function getImageForId($id)
 {
-    $dir = '../public/src/images';
+    $dir = "../public/src/images/";
     $files = scandir($dir);
 
     foreach ($files as $file) {
@@ -227,4 +226,14 @@ function translate($string)
 function dd($object)
 {
     die(var_dump($object));
+}
+
+function basePath($path)
+{
+    return BASE_PATH . $path;
+}
+
+function redirect($url)
+{
+    header('Location: ' . $url);
 }

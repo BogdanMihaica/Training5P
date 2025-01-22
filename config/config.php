@@ -1,11 +1,12 @@
 <?php
 
-return [
+$config = [
     'database' => [
         'username' => 'root',
         'password' => '',
         'dbname' => 'training',
-        'connection' => 'mysql:host=127.0.0.1',
+        'connection' => 'mysql:host=localhost',
+        'port' => '3306',
         'options' => []
     ],
     'admin' => [

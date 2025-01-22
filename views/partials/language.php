@@ -1,5 +1,4 @@
 <?php
-require_once('../common/functions.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['language'])) {
 
@@ -25,6 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['language'])) {
 }
 ?>
 <div class="language-block" style="position: fixed; right: 0; z-index: 10;">
-    <a href="<?= '?language=en' . ($_SERVER['QUERY_STRING'] ? ('&' . $_SERVER['QUERY_STRING']) : '') ?>">EN</a>
-    <a href="<?= '?language=ro' . ($_SERVER['QUERY_STRING'] ? ('&' . $_SERVER['QUERY_STRING']) : '') ?>">RO</a>
+    <?php
+    $currentQueryString = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
+    $baseUrl = strtok($_SERVER['REQUEST_URI'], '?');
+
+    $queryParams = $currentQueryString ? '&' . $currentQueryString : '';
+    ?>
+
+    <a href="<?= $baseUrl . '?language=en' . $queryParams ?>">EN</a>
+    <a href="<?= $baseUrl . '?language=ro' . $queryParams ?>">RO</a>
 </div>

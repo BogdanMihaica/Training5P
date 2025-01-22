@@ -1,3 +1,2 @@
-config/credentials.php
-config/manager.php
-public/src/images/*
+./config
+./public/src/images/*

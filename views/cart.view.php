@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../components/header.php') ?>
+<?php include basePath('views/partials/header.php') ?>
 
 <body>
 
-    <?php include('../components/language.php') ?>
+    <?php include basePath('views/partials/language.php') ?>
 
-    <?php include('../components/admin-button.php') ?>
+    <?php include basePath('views/partials/admin-button.php') ?>
 
     <div class="big-circle top-right"></div>
     <div class="big-circle bottom-left"></div>
 
-    <a href="index.php" class="view-cart"><?= translate("View product list") ?></a>
+    <a href="/" class="view-cart"><?= translate("View product list") ?></a>
     <h1 class="page-title"><?= translate("Your cart items") ?></h1>
     <div class="products-container">
         <?php foreach ($result as $row) : ?>
@@ -35,7 +35,7 @@
                     <p class="product-price">
                         <?= sanitize($row['price']) . '$' ?>
                     </p>
-                    <a class="remove-from-cart" href="cart.php?index=<?= sanitize($row['id']) ?>">
+                    <a class="remove-from-cart" href="cart?index=<?= sanitize($row['id']) ?>">
                         <?= translate("Remove item") ?>
                     </a>
                 </div>
@@ -67,19 +67,19 @@
 
                     <div class="background-circle green"></div>
                     <h1 class="checkout-message"><?= translate("Your order has been placed succesfully!") ?></h1>
-                    <img src="../misc/svg/order-placed.svg" alt="order placed" class="response-image">
+                    <img src="src/svg/order-placed.svg" alt="order placed" class="response-image">
 
                 <?php elseif ($response == 2) : ?>
 
                     <div class="background-circle red"></div>
                     <h1 class="checkout-message"><?= translate("You don't have any items in your cart!") ?></h1>
-                    <img src="../misc/png/error.png" alt="error occured" class="response-image">
+                    <img src="src/png/error.png" alt="error occured" class="response-image">
 
                 <?php else : ?>
 
                     <div class="background-circle red"></div>
                     <h1 class="checkout-message"><?= translate("Unknown error occurred. Please try again later.") ?></h1>
-                    <img src="../misc/png/error.png" alt="error occured" class="response-image">
+                    <img src="src/png/error.png" alt="error occured" class="response-image">
 
                 <?php endif ?>
             </div>

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('../components/header.php') ?>
+<?php include basePath('views/partials/header.php') ?>
 
 <body>
 
-    <?php include('../components/admin-navbar.php') ?>
+    <?php include basePath('views/partials/admin-navbar.php') ?>
 
-    <?php include('../components/background.php') ?>
+    <?php include basePath('views/partials/background.php') ?>
 
-    <?php include('../components/language.php') ?>
+    <?php include basePath('views/partials/language.php') ?>
 
     <div class="orders-container">
         <h1 class="title"><?= translate('Orders Dashboard') ?></h1>
@@ -28,7 +28,7 @@
                     <td><?= sanitize($order['creation_date']) ?></td>
                     <td><?= sanitize($order['customer_name']) ?></td>
                     <td><?= sanitize($order['customer_email']) ?></td>
-                    <td><a href="<?= 'order.php?id=' . $order['id'] ?>"><?= translate('See full order') ?></a></td>
+                    <td><a href="<?= '/order?id=' . $order['id'] ?>"><?= translate('See full order') ?></a></td>
                 </tr>
             <?php endforeach ?>
 
