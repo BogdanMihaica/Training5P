@@ -8,4 +8,5 @@ try {
 } catch (PDOException $e) {
     die('' . $e->getMessage());
 }
+
 $GLOBALS['conn'] = $conn;

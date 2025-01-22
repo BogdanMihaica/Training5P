@@ -209,7 +209,7 @@ function removeFromCart($index)
 
 function sanitize($string)
 {
-    return htmlspecialchars($string);
+    return htmlspecialchars($string, ENT_QUOTES | ENT_HTML401, 'UTF-8');
 }
 
 function translate($string)
@@ -222,4 +222,9 @@ function translate($string)
     } else {
         return $string;
     }
+}
+
+function dd($object)
+{
+    die(var_dump($object));
 }
