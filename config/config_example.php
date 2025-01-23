@@ -2,17 +2,17 @@
 
 $config = [
     'database' => [
-        'username' => 'root',
-        'password' => '',
-        'dbname' => 'training',
-        'connection' => 'mysql:host=localhost',
+        'username' => 'Your username',
+        'password' => 'Your Password',
+        'dbname' => 'Name of your database',
+        'connection' => 'Connection name',
         'options' => []
     ],
     'admin' => [
-        'username' => 'bogdan',
-        'password' => password_hash('parola', PASSWORD_DEFAULT)
+        'username' => 'Admin username',
+        'password' => password_hash('Admin password', PASSWORD_DEFAULT)
     ],
     'mail' => [
-        'admin_email' => 'claudiumihaica12@gmail.com',
+        'admin_email' => 'Your email here',
     ]
 ];
