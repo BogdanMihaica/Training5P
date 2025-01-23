@@ -26,7 +26,7 @@
     border-bottom: 1px solid #ddd;
 }
 
-.produt-image-entry img {
+.product-image-entry img {
     width: 50px;
     height: 50px;
     object-fit: cover;

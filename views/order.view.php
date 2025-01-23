@@ -46,7 +46,7 @@
                             <td>
                                 <a href="<?= '/product?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
                             </td>
-                            <td class="produt-image-entry">
+                            <td class="product-image-entry">
                                 <img src="<?= 'src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="product image">
                             </td>
                             <td><?= sanitize($product['description']) ?></td>
