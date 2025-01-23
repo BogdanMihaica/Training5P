@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
 
     $index = $_GET['index'];
 
-    $foundProduct = fetch('products', 'id', [$index]);
+    $foundProduct = Database::fetch('products', 'id', [$index]);
 
     if (count($foundProduct) !== 0) {
         addToCart($index, $_GET['quantity']);
@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
     }
 
     if (!empty($cartItems)) {
-        $products = fetch('products', 'id', array_keys($cartItems), true);
+        $products = Database::fetch('products', 'id', array_keys($cartItems), true);
     } else {
-        $products = fetch();
+        $products = Database::fetch();
     }
 }
 

@@ -11,11 +11,11 @@ $grand_total = 0;
 $error_message = '';
 
 if (isset($_GET['id']) && intval($_GET['id']) > 0) {
-    $result = fetch('orders', 'id', [intval($_GET['id'])]);
+    $result = Database::fetch('orders', 'id', [intval($_GET['id'])]);
 
     if (count($result) > 0) {
         $order = $result[0];
-        $products = fetchOrderProducts($_GET['id']);
+        $products = Database::fetchOrderProducts($_GET['id']);
 
         foreach ($products as $product) {
             $grand_total += intval($product['quantity']) * $product['price'];

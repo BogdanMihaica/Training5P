@@ -1,9 +1,10 @@
 <?php
+
 require_once basePath('utils/email_template.php');
 
-session_start();
-
 require basePath('config/config.php');
+
+session_start();
 
 $cartItems = $_SESSION['cart'];
 $result = [];
@@ -42,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
         if (count($_SESSION['cart']) === 0) {
             $response = 2;
         } elseif (mail($to, $subject, $body, $headers)) {
-            $orderId = insertOrder($name, $email);
+            $orderId = Database::insertOrder($name, $email);
 
             if ($orderId > 0) {
-                insertOrdersProducts($_SESSION['cart'], $orderId);
+                Database::insertOrdersProducts($_SESSION['cart'], $orderId);
             }
 
             $response = 1;
@@ -57,6 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
 }
 
 if (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
-    $result = fetch('products', 'id', array_keys($cartItems));
+    $result = Database::fetch('products', 'id', array_keys($cartItems));
 }
 require basePath('views/cart.view.php');

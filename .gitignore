@@ -1,2 +1,2 @@
-./config
-./public/src/images/*
+config/
+public/src/images/*

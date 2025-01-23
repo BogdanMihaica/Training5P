@@ -43,7 +43,7 @@
 
                     <div class="input-group">
                         <label for="price"><?= translate('Price') ?></label>
-                        <input type="number" id="price" name="price" value="<?= $editMode ? $price : '' ?>">
+                        <input type="number" step="0.01" id="price" name="price" value="<?= $editMode ? $price : '' ?>">
                         <p class="error"><?= translate($errors['price']) ?></p>
                     </div>
 

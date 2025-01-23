@@ -8,7 +8,7 @@ if (!isset($_SESSION['admin'])) {
 $orders = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $orders = fetch('orders');
+    $orders = Database::fetch('orders');
 }
 
 require basePath('views/orders.view.php');

@@ -19,7 +19,7 @@ $errors = ['title' => '', 'description' => '', 'price' => ''];
 // If we make a GET request to the server, try to fetch the product with that id. If it doesn't exist, set the product to null
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
 
-    $query = fetch('products', 'id', [$_GET['edit']]);
+    $query = Database::fetch('products', 'id', [$_GET['edit']]);
     $editMode = true;
 
     if (count($query) !== 0) {
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         $response = -1;
 
         if (!$validationError) {
-            $response = insertProduct($title, $description, $price);
+            $response = Database::insertProduct($title, $description, $price);
         }
 
         if ($response < 0) {
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         $editMode = true;
         $id = $_POST['edit'];
 
-        $query = fetch('products', 'id', [$id]);
+        $query = Database::fetch('products', 'id', [$id]);
 
         if (count($query) !== 0) {
             $product = $query[0];
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         } else {
             $response = -1;
             if (!$validationError) {
-                $response = update($id, $title, $description, $price);
+                $response = Database::updateProducts($id, $title, $description, $price);
             }
 
             if (!$response) {

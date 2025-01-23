@@ -12,13 +12,13 @@ $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 0;
 $products = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "GET" && !isset($_GET['id'])) {
-    $products = fetch();
+    $products = Database::fetch();
 } else if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
 
-    if (!deleteProduct($_GET['id'])) {
+    if (!Database::deleteProduct($_GET['id'])) {
         $errorMessage = translate('Unable to delete product with id ') . $_GET['id'];
     } else {
-        $products = fetch();
+        $products = Database::fetch();
         $totalProducts = count($products);
 
         $totalPages = ceil($totalProducts / $prodPerPage);

@@ -210,6 +210,12 @@ $translations = [
     'Invalid email format' => [
         'ro' => 'Email invalid'
     ],
+    'Password cannot be empty' => [
+        'ro' => 'Parola nu poate fi goala'
+    ],
+    'Username cannot be empty' => [
+        'ro' => 'Numele de utilizator nu poate fi gol'
+    ],
 ];
 
 $GLOBALS['translations'] = $translations;

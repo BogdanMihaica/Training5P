@@ -10,7 +10,7 @@
 function getEmailBody($user, $email)
 {
     $productIds = array_keys($_SESSION['cart']);
-    $products = fetch('products', 'id', $productIds);
+    $products = Database::fetch('products', 'id', $productIds);
 
     $emailBody = "<html><body>";
     $emailBody .= "<p><strong>{$user}</strong> with email <strong>{$email}</strong> has placed the following order:</p>";
@@ -33,7 +33,7 @@ function getEmailBody($user, $email)
         $productId = $product['id'];
         $quantity = $_SESSION['cart'][$productId];
         $totalPrice = $product['price'] * $quantity;
-        $imageUrl = 'http://localhost/php/training/Training5P/public/src/images/' . getImageForId($product['id']);
+        $imageUrl = 'http://localhost:8888/src/images/' . getImageForId($product['id']);
         $grandTotal += $totalPrice;
 
         $emailBody .= "<tr>";
