@@ -20,13 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
     redirect('/');
 } else {
     if (isset($_SESSION['cart'])) {
-        #$_SESSION['cart'] = [];
         $cartItems = $_SESSION['cart'];
     } else {
         $_SESSION['cart'] = [];
     }
 
-    if (!isEmpty($cartItems)) {
+    if (!empty($cartItems)) {
         $products = Database::fetch('products', 'id', array_keys($cartItems), true);
     } else {
         $products = Database::fetch();

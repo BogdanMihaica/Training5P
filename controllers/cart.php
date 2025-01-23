@@ -34,15 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     }
 
     if (isEmpty($errors)) {
+
         $to = $mailConfig['admin_email'];
         $subject = 'Test Email';
         $name = sanitize($_POST['customer_name']);
-        $body = getEmailBody($name, $email);
+        $body = !isEmpty($_SESSION['cart']) ? getEmailBody($name, $email) : '';
         $headers = 'From: ' . $email;
 
-        if (count($_SESSION['cart']) === 0) {
+        if (isEmpty($_SESSION['cart'])) {
             $response = 2;
         } elseif (mail($to, $subject, $body, $headers)) {
+
             $orderId = Database::insertOrder($name, $email);
 
             if ($orderId > 0) {
@@ -58,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     }
 }
 
-if (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
+if (isset($_SESSION['cart']) && !isEmpty($_SESSION['cart'])) {
     $result = Database::fetch('products', 'id', array_keys($cartItems));
 }
 

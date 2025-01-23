@@ -32,19 +32,19 @@
                     <div class="input-group">
                         <label for="title"><?= translate('Title') ?></label>
                         <input type="text" id="title" name="title" value="<?= $editMode ? sanitize($title) : '' ?>">
-                        <p class="error"><?= display($errors, 'title') ?></p>
+                        <p class="error"><?= getIfExists($errors, 'title') ?></p>
                     </div>
 
                     <div class="input-group">
                         <label for="description"><?= translate('Description') ?></label>
                         <textarea id="description" name="description"><?= $editMode ? sanitize($description) : '' ?></textarea>
-                        <p class="error"><?= display($errors, 'description') ?></p>
+                        <p class="error"><?= getIfExists($errors, 'description') ?></p>
                     </div>
 
                     <div class="input-group">
                         <label for="price"><?= translate('Price') ?></label>
                         <input type="number" step="0.01" id="price" name="price" value="<?= $editMode ? $price : '' ?>">
-                        <p class="error"><?= display($errors, 'price') ?></p>
+                        <p class="error"><?= getIfExists($errors, 'price') ?></p>
                     </div>
 
 

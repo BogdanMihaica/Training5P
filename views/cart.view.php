@@ -50,11 +50,11 @@
 
             <label for="customer-name"><?= translate('Name') . ':' ?></label>
             <input type="text" id="customer-name" name="customer_name" placeholder="<?= translate('Enter your name') ?>">
-            <p class="error"><?= display($errors, 'name') ?></p>
+            <p class="error"><?= getIfExists($errors, 'name') ?></p>
 
             <label for="customer-email"><?= translate('Email') . ':' ?></label>
             <input type="text" id="customer-email" name="customer_email" placeholder="<?= translate('Enter your email') ?>">
-            <p class="error"><?= display($errors, 'email') ?></p>
+            <p class="error"><?= getIfExists($errors, 'email') ?></p>
 
             <button type="submit" class="checkout-button"><?= translate("Checkout") ?></button>
         </form>

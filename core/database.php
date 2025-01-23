@@ -40,7 +40,12 @@ class Database
             $isIn = $not ? 'NOT' : '';
 
             $stmt = Database::$conn->prepare("SELECT * FROM {$table} WHERE {$columnName} {$isIn} IN ({$placeholders})");
-            $stmt->execute($values);
+
+            try {
+                $stmt->execute($values);
+            } catch (PDOException $e) {
+                die("" . $e->getMessage());
+            }
 
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }

@@ -175,28 +175,20 @@ function redirect($url)
 function isEmpty($var)
 {
     if (is_array($var)) {
-        return empty($var);
+        return count($var) === 0;
     }
-    return empty($var) && $var !== '0' && $var !== 0;
+    return strlen($var) === 0;
 }
 
 /**
- * Returns the message if it is not empty else an empty string if the provided message is empty or doesn't exist
+ * Returns the value from the subject array if the key exists
  * 
- * @param string/null $subject
+ * @param array $subject
+ * @param string $key
  * 
  * @return string
  */
-function display($subject, $key = null)
+function getIfExists($subject, $key)
 {
-    if (is_array($subject)) {
-        if (array_key_exists($key, $subject)) {
-            return $subject[$key];
-        } else {
-            return '';
-        }
-    } else if (!isEmpty($subject)) {
-        return $subject;
-    }
-    return '';
+    return array_key_exists($key, $subject) ? $subject[$key] : '';
 }
