@@ -6,7 +6,6 @@ $config = [
         'password' => '',
         'dbname' => 'training',
         'connection' => 'mysql:host=localhost',
-        'port' => '3306',
         'options' => []
     ],
     'admin' => [
