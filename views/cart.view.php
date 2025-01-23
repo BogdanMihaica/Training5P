@@ -50,36 +50,36 @@
 
             <label for="customer-name"><?= translate('Name') . ':' ?></label>
             <input type="text" id="customer-name" name="customer_name" placeholder="<?= translate('Enter your name') ?>">
-            <p class="error"><?= translate($error['name']) ?></p>
+            <p class="error"><?= display($errors, 'name') ?></p>
 
             <label for="customer-email"><?= translate('Email') . ':' ?></label>
             <input type="text" id="customer-email" name="customer_email" placeholder="<?= translate('Enter your email') ?>">
-            <p class="error"><?= translate($error['email']) ?></p>
+            <p class="error"><?= display($errors, 'email') ?></p>
 
             <button type="submit" class="checkout-button"><?= translate("Checkout") ?></button>
         </form>
     </div>
 
-    <?php if (empty($error['name']) && empty($error['email']) && $response >= 0) : ?>
+    <?php if (isEmpty($errors) && $response >= 0) : ?>
         <div class="checkout-page-container">
             <div class="response">
                 <?php if ($response == 1) : ?>
 
                     <div class="background-circle green"></div>
                     <h1 class="checkout-message"><?= translate("Your order has been placed succesfully!") ?></h1>
-                    <img src="src/svg/order-placed.svg" alt="order placed" class="response-image">
+                    <img src="src/icons/order-placed.svg" alt="order placed" class="response-image">
 
                 <?php elseif ($response == 2) : ?>
 
                     <div class="background-circle red"></div>
                     <h1 class="checkout-message"><?= translate("You don't have any items in your cart!") ?></h1>
-                    <img src="src/png/error.png" alt="error occured" class="response-image">
+                    <img src="src/icons/error.png" alt="error occured" class="response-image">
 
                 <?php else : ?>
 
                     <div class="background-circle red"></div>
                     <h1 class="checkout-message"><?= translate("Unknown error occurred. Please try again later.") ?></h1>
-                    <img src="src/png/error.png" alt="error occured" class="response-image">
+                    <img src="src/icons/error.png" alt="error occured" class="response-image">
 
                 <?php endif ?>
             </div>

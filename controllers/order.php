@@ -7,24 +7,24 @@ if (!isset($_SESSION['admin'])) {
 
 $order = null;
 $products = [];
-$grand_total = 0;
-$error_message = '';
+$grandTotal = 0;
+$errorMessage = '';
 
-if (isset($_GET['id']) && intval($_GET['id']) > 0) {
-    $result = Database::fetch('orders', 'id', [intval($_GET['id'])]);
+if (isset($_GET['id']) && $_GET['id'] > 0) {
+    $result = Database::fetch('orders', 'id', [$_GET['id']]);
 
     if (count($result) > 0) {
         $order = $result[0];
         $products = Database::fetchOrderProducts($_GET['id']);
 
         foreach ($products as $product) {
-            $grand_total += intval($product['quantity']) * $product['price'];
+            $grandTotal += $product['quantity'] * $product['price'];
         }
     } else {
-        $error_message = translate('There is no such order with id #') . $_GET['id'];
+        $errorMessage = translate('There is no such order with id #') . $_GET['id'];
     }
 } else {
-    $error_message = translate('This page doesn\'t exist');
+    $errorMessage = translate('This page doesn\'t exist');
 }
 
 require basePath('views/order.view.php');

@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Gets the path of an image from the images directory by a specified id
+ * 
+ * @param integer $id
+ * 
+ * @return string
+ */
 function getImageForId($id)
 {
     $dir = basePath('public/src/images/');
@@ -66,6 +74,13 @@ function handleImageUpload($image, $id)
     return 0;
 }
 
+/**
+ * Adds a product to the cart with id and quantity
+ * 
+ * @param integer $id
+ * @param integer $quantity
+ * 
+ */
 function addToCart($id, $quantity)
 {
     if (!in_array($id, array_keys($_SESSION['cart']))) {
@@ -73,6 +88,11 @@ function addToCart($id, $quantity)
     }
 }
 
+/**
+ * Removes an item from the cart if it exists
+ * 
+ * @param integer $index
+ */
 function removeFromCart($index)
 {
     if (isset($_SESSION['cart'][$index])) {
@@ -80,11 +100,25 @@ function removeFromCart($index)
     }
 }
 
+/**
+ * Sanitizes a string using the htmlspecialchars function
+ * 
+ * @param string $string
+ * 
+ * @return string
+ */
 function sanitize($string)
 {
     return htmlspecialchars($string, ENT_QUOTES | ENT_HTML401, 'UTF-8');
 }
 
+/**
+ * Translates a string using a global variable 'translations'
+ * 
+ * @param string $string
+ * 
+ * @return string
+ */
 function translate($string)
 {
     $translations = $GLOBALS['translations'];
@@ -97,17 +131,72 @@ function translate($string)
     }
 }
 
-function dd($object)
+/**
+ * var_dumps an obnject and dies it (debug purposes)
+ * 
+ * @param mixed $object
+ * 
+ * @return never
+ */
+function dd($subject)
 {
-    die(var_dump($object));
+    die(var_dump($subject));
 }
 
+/**
+ * Returns the path of a file using the BASE_PATH constant defined in public/index.html
+ * 
+ * @param string $path
+ * 
+ * @return string
+ */
 function basePath($path)
 {
     return BASE_PATH . $path;
 }
 
+/**
+ * Redirects the user to a specified url
+ * 
+ * @param string $url
+ * 
+ * @return void
+ */
 function redirect($url)
 {
     header('Location: ' . $url);
+}
+
+/**
+ * Verifies if a variable is empty or not equals to 0
+ * @param mixed $var
+ * @return bool
+ */
+function isEmpty($var)
+{
+    if (is_array($var)) {
+        return empty($var);
+    }
+    return empty($var) && $var !== '0' && $var !== 0;
+}
+
+/**
+ * Returns the message if it is not empty else an empty string if the provided message is empty or doesn't exist
+ * 
+ * @param string/null $subject
+ * 
+ * @return string
+ */
+function display($subject, $key = null)
+{
+    if (is_array($subject)) {
+        if (array_key_exists($key, $subject)) {
+            return $subject[$key];
+        } else {
+            return '';
+        }
+    } else if (!isEmpty($subject)) {
+        return $subject;
+    }
+    return '';
 }

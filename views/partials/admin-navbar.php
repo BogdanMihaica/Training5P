@@ -7,17 +7,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['logout']) && intval($_G
 <div class="admin-navbar">
     <a href="/" class="nav-link">
         <div class="nav-item">
-            <img src="src/png/home.png" alt="" class="nav-icon">
+            <img src="src/icons/home.png" alt="" class="nav-icon">
             <p class="nav-link-text"><?= translate('Home') ?></p>
         </div>
     </a><a href="/products" class="nav-link">
         <div class="nav-item">
-            <img src="src/png/products.png" alt="" class="nav-icon">
+            <img src="src/icons/products.png" alt="" class="nav-icon">
             <p class="nav-link-text"><?= translate('Products') ?></p>
         </div>
     </a><a href="/orders" class="nav-link">
         <div class="nav-item">
-            <img src="src/png/orders.png" alt="" class="nav-icon">
+            <img src="src/icons/orders.png" alt="" class="nav-icon">
             <p class="nav-link-text"><?= translate('Orders') ?></p>
         </div>
     </a>
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['logout']) && intval($_G
 
     <a href="<?= $baseUrl . '?logout=1' . $queryParams ?>" class="nav-link">
         <div class="nav-item">
-            <img src="src/png/logout.png" alt="" class="nav-icon">
+            <img src="src/icons/logout.png" alt="" class="nav-icon">
             <p class="nav-link-text"><?= translate('Log out') ?></p>
         </div>
     </a>

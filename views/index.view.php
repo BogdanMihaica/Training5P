@@ -43,7 +43,7 @@
                         <a class="add-to-cart" href="?index=<?= sanitize($row['id']) ?>&quantity="
                             onclick="this.href += document.querySelector('.select-<?= sanitize($row['id']) ?>').value;">
                             <span class="left-part">
-                                <img src="src/svg/shopping-cart.svg" alt="Icon" class="svg-icon">
+                                <img src="src/icons/shopping-cart.svg" alt="Icon" class="svg-icon">
                             </span>
                             <span class="right-part">
                                 <?= translate("Add to cart") ?>

@@ -5,30 +5,30 @@ require basePath('config/config.php');
 
 $loginData = $config['admin'];
 $error = false;
-$errors = ['form' => '', 'username' => '', 'password' => ''];
+$errors = [];
 
 if (isset($_SESSION['admin']) &&  $_SESSION['admin'] == true) {
     redirect('/');
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($_POST['username'])) {
-        $errors['username'] = 'Username cannot be empty';
+    if (isEmpty($_POST['username'])) {
+        $errors['username'] = translate('Username cannot be empty');
         $error = true;
     }
 
-    if (empty($_POST['password'])) {
-        $errors['password'] = 'Password cannot be empty';
+    if (isEmpty($_POST['password'])) {
+        $errors['password'] = translate('Password cannot be empty');
         $error = true;
     }
 
     if (
+        !$error &&
         $_POST['username'] === $loginData['username'] &&
-        password_verify($_POST['password'], $loginData['password']) &&
-        $error == false
+        password_verify($_POST['password'], $loginData['password'])
     ) {
         $_SESSION['admin'] = true;
         redirect('/products');
     } else {
-        $errors['form'] = 'Username or password don\'t match!';
+        $errors['form'] = translate('Username or password don\'t match!');
     }
 }
 

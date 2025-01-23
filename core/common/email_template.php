@@ -13,16 +13,16 @@ function getEmailBody($user, $email)
     $products = Database::fetch('products', 'id', $productIds);
 
     $emailBody = "<html><body>";
-    $emailBody .= "<p><strong>{$user}</strong> with email <strong>{$email}</strong> has placed the following order:</p>";
+    $emailBody .= "<p><strong>{$user}</strong> " . translate('with email') .  " <strong>{$email}</strong>" . translate(' has placed the following order') . ':</p>';
     $emailBody .= "<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;'>";
     $emailBody .= "<thead style='background-color: #f2f2f2;'>";
     $emailBody .= "<tr>";
-    $emailBody .= "<th style='padding: 10px; text-align: left;'>Product</th>";
-    $emailBody .= "<th style='padding: 10px; text-align: center;'>Image</th>";
-    $emailBody .= "<th style='padding: 10px; text-align: left;'>Description</th>";
-    $emailBody .= "<th style='padding: 10px; text-align: center;'>Quantity</th>";
-    $emailBody .= "<th style='padding: 10px; text-align: right;'>Price</th>";
-    $emailBody .= "<th style='padding: 10px; text-align: right;'>Total</th>";
+    $emailBody .= "<th style='padding: 10px; text-align: left;'>" . translate('Product') . '</th>';
+    $emailBody .= "<th style='padding: 10px; text-align: center;'>" . translate('Image') . '</th>';
+    $emailBody .= "<th style='padding: 10px; text-align: left;'>" . translate('Description') . '</th>';
+    $emailBody .= "<th style='padding: 10px; text-align: center;'>" . translate('Quantity') . '</th>';
+    $emailBody .= "<th style='padding: 10px; text-align: right;'>" . translate('Price') . '</th>';
+    $emailBody .= "<th style='padding: 10px; text-align: right;'>" . translate('Total') . '</th>';
     $emailBody .= "</tr>";
     $emailBody .= "</thead>";
     $emailBody .= "<tbody>";
@@ -49,12 +49,12 @@ function getEmailBody($user, $email)
     $emailBody .= "</tbody>";
     $emailBody .= "<tfoot>";
     $emailBody .= "<tr>";
-    $emailBody .= "<td colspan='5' style='text-align: right;'><strong>Grand Total:</strong></td>";
+    $emailBody .= "<td colspan='5' style='text-align: right;'><strong>" . translate('Grand Total') . '</strong></td>';
     $emailBody .= "<td style='text-align: right;'>{$grandTotal}</td>";
     $emailBody .= "</tr>";
     $emailBody .= "</tfoot>";
     $emailBody .= "</table>";
-    $emailBody .= "<p>Thank you for your order!</p>";
+    $emailBody .= '<p>' . translate('Thank you for your order!') . '</p>';
     $emailBody .= "</body></html>";
 
     return $emailBody;

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index']) && isset($_GET
         $_SESSION['cart'] = [];
     }
 
-    if (!empty($cartItems)) {
+    if (!isEmpty($cartItems)) {
         $products = Database::fetch('products', 'id', array_keys($cartItems), true);
     } else {
         $products = Database::fetch();

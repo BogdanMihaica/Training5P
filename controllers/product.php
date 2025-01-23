@@ -14,7 +14,7 @@ $price = 0;
 $logMessage = '';
 $newId = -1;
 $fileLogMessage = '';
-$errors = ['title' => '', 'description' => '', 'price' => ''];
+$errors = [];
 
 // If we make a GET request to the server, try to fetch the product with that id. If it doesn't exist, set the product to null
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
@@ -38,31 +38,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
     $description = $_POST['description'] ?? '';
     $price = $_POST['price'] ?? '';
 
-    if (empty(trim($title))) {
-        $errors['title'] = 'Title cannot be empty.';
+    if (isEmpty(trim($title))) {
+        $errors['title'] = translate('Title cannot be empty.');
     }
 
-    if (empty(trim($description))) {
-        $errors['description'] = 'Description cannot be null.';
+    if (isEmpty(trim($description))) {
+        $errors['description'] = translate('Description cannot be empty.');
     }
 
-    if (empty($price) || !is_numeric($price) || floatval($price) <= 0) {
-        $errors['price'] = 'Price must be a not null positive number';
+    if (isEmpty($price) || !is_numeric($price) || $price <= 0) {
+        $errors['price'] = translate('Price must be a not null positive number');
     }
-
-    $validationError = !(empty($errors['title']) && empty($errors['description']) && empty($errors['price']));
 
     if (isset($_POST['add'])) {
         $response = -1;
 
-        if (!$validationError) {
+        if (isEmpty($errors)) {
             $response = Database::insertProduct($title, $description, $price);
-        }
-
-        if ($response < 0) {
-            $logMessage = 'Could not insert data';
         } else {
-            $logMessage = 'Successfully added data!';
+            $logMessage = translate('Could not insert data');
+        }
+        if ($response < 0) {
+            $logMessage = translate('Could not insert data');
+        } else {
+            $logMessage = translate('Successfully added data!');
             $newId = $response;
         }
     } elseif (isset($_POST['edit'])) {
@@ -76,15 +75,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         }
 
         if (!$product) {
-            $logMessage = 'Product not found for editing.';
+            $logMessage = translate('Product not found for editing.');
         } else {
             $response = -1;
-            if (!$validationError) {
+
+            if (isEmpty($errors)) {
                 $response = Database::updateProducts($id, $title, $description, $price);
+            } else {
+                $logMessage = translate('Could not update data');
             }
 
-            if (!$response) {
-                $logMessage = 'Could not update data';
+            if ($response < 0) {
+                $logMessage = translate('Could not update data');
 
                 // Restore product details in case of failure
                 $id = $product['id'];
@@ -92,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
                 $description = $product['description'];
                 $price = $product['price'];
             } else {
-                $logMessage = 'Successfully updated data!';
+                $logMessage = translate('Successfully updated data!');
                 $newId = $id;
             }
         }
@@ -105,13 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
         $fileUploadResponse = handleImageUpload($_FILES['image'], $newId);
 
         if ($fileUploadResponse == 1) {
-            $fileLogMessage = 'Image uploaded succesfully!';
+            $fileLogMessage = translate('Image uploaded succesfully!');
         } elseif ($fileUploadResponse == 2) {
-            $fileLogMessage = 'Not supported type. Required file type : jpg / jpeg / png / gif';
+            $fileLogMessage = translate('Not supported type. Required file type : jpg / jpeg / png / gif');
         } elseif ($fileUploadResponse == 3) {
-            $fileLogMessage = 'Not an image';
+            $fileLogMessage = translate('Not an image');
         } else {
-            $fileLogMessage = 'Unknown error while uploading image';
+            $fileLogMessage = translate('Unknown error while uploading image');
         }
     }
 }

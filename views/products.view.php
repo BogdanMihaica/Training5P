@@ -42,14 +42,14 @@
                     <td>
                         <a href="<?= '/product?edit=' . $product['id'] ?>"><?= sanitize($product['title']) ?></a>
                     </td>
-                    <td class="produt-image-entry">
+                    <td class="product-image-entry">
                         <img src="<?= './src/images/' . getImageForId(sanitize($product['id'])) ?>" alt="<?= translate('Product Image') ?>">
                     </td>
                     <td><?= sanitize($product['description']) ?></td>
                     <td><?= sanitize($product['price']) ?></td>
                     <td>
                         <a href="<?= '/products?page=' . $currentPage . '&id=' . sanitize($product['id']) ?>">
-                            <img class="delete-button" src="src/png/delete.png" alt="<?= translate('Delete Button') ?>">
+                            <img class="delete-button" src="src/icons/delete.png" alt="<?= translate('Delete Button') ?>">
                         </a>
                     </td>
                 </tr>

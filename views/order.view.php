@@ -62,11 +62,11 @@
                         <td></td>
                         <td></td>
                         <td><strong><?= translate('Grand total') ?></strong></td>
-                        <td><?= $grand_total ?></td>
+                        <td><?= $grandTotal ?></td>
                     </tr>
             </div>
         <?php else : ?>
-            <h1 class="title"><?= sanitize($error_message) ?></h1>
+            <h1 class="title"><?= sanitize($errorMessage) ?></h1>
         <?php endif ?>
     </div>
 

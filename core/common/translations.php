@@ -189,7 +189,7 @@ $translations = [
     'Title cannot be empty.' => [
         'ro' => 'Titlul nu poate fi gol'
     ],
-    'Description cannot be null.' => [
+    'Description cannot be empty.' => [
         'ro' => 'Descrierea nu poate fi goala'
     ],
     'Price must be a not null positive number' => [
@@ -216,6 +216,19 @@ $translations = [
     'Username cannot be empty' => [
         'ro' => 'Numele de utilizator nu poate fi gol'
     ],
+    'with email' => [
+        'ro' => 'cu email-ul'
+    ],
+    ' has placed the following order' => [
+        'ro' => ' a plasat urmatoarea comanda'
+    ],
+    'Thank you for your order!' => [
+        'ro' => 'Multumim pentru comanda!'
+    ],
+    'Product' => [
+        'ro' => 'Produs'
+    ],
+    'Grand Total' => [
+        'ro' => 'Total general'
+    ],
 ];
-
-$GLOBALS['translations'] = $translations;

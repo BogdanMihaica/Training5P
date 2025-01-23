@@ -1,6 +1,6 @@
 <?php
 
-require_once basePath('utils/email_template.php');
+require_once basePath('core/common/email_template.php');
 
 require basePath('config/config.php');
 
@@ -8,7 +8,7 @@ session_start();
 
 $cartItems = $_SESSION['cart'];
 $result = [];
-$error = ['name' => '', 'email' => ''];
+$errors = [];
 $mailConfig = $config['mail'];
 $response = -1;
 
@@ -23,17 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
     $name = trim($_POST['customer_name']);
     $email = trim($_POST['customer_email']);
 
-    if (empty($name)) {
-        $error['name'] = 'You must specify your name';
+    if (isEmpty($name)) {
+        $errors['name'] = translate('You must specify your name');
     }
 
-    if (empty($email)) {
-        $error['email'] = 'You must specify your email';
+    if (isEmpty($email)) {
+        $errors['email'] = translate('You must specify your email');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error['email'] = 'Invalid email format';
+        $errors['email'] = translate('Invalid email format');
     }
 
-    if (empty($error['name']) && empty($error['email'])) {
+    if (isEmpty($errors)) {
         $to = $mailConfig['admin_email'];
         $subject = 'Test Email';
         $name = sanitize($_POST['customer_name']);
@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
             }
 
             $response = 1;
+
             $_SESSION['cart'] = [];
         } else {
             $response = 0;
@@ -60,4 +61,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['index'])) {
 if (isset($_SESSION['cart']) && count($_SESSION['cart'])) {
     $result = Database::fetch('products', 'id', array_keys($cartItems));
 }
+
 require basePath('views/cart.view.php');
