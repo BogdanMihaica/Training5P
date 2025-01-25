@@ -32,8 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && !isset($_GET['id'])) {
 }
 if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['page'])) {
     $currentPage = intval($_GET['page']);
+
     if ($currentPage * $prodPerPage >= count($products)) {
-        redirect('/products.php?page=' . ($currentPage - 1));
+        redirect('/products?page=' . ($currentPage - 1));
     }
 }
 

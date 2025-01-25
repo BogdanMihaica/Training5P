@@ -151,7 +151,8 @@ class Database
         if (!$result) {
             die('Failed to delete item');
         } else {
-            $filePath = 'src/images/' . $value . '.jpg';
+            $filePath = "../public/src/images/" . getImageForId($value);
+
             if (file_exists($filePath)) {
                 unlink($filePath);
             }

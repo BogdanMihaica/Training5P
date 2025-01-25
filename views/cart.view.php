@@ -15,6 +15,7 @@
     <a href="/" class="view-cart"><?= translate("View product list") ?></a>
     <h1 class="page-title"><?= translate("Your cart items") ?></h1>
     <div class="products-container">
+
         <?php foreach ($result as $row) : ?>
             <div class="product">
                 <div class="product-details">
@@ -42,6 +43,7 @@
 
             </div>
         <?php endforeach ?>
+
     </div>
 
     <div class="checkout-container">
